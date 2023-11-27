@@ -1,0 +1,84 @@
+<DOCTYPE html>
+<html>
+    <head>
+        <title>html File Manager</title>
+        <script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/dist/GlslCanvas.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+        <link id="main-style-link" rel="stylesheet" href="mainstyle.css">
+        <link rel="icon" type="image/x-icon" href="/imgdata/favicon-fade-empty.svg">
+    </head>
+    <body id="body" onload="onPageLoaded()">
+        <canvas id="shaderbg" class="glslCanvas" data-fragment-url="shader.frag"
+            style="
+                position: fixed;
+                top: 0px;
+                left: 0px;
+                z-index: -1;
+                filter: blur(5px) brightness(0.5);
+            "></canvas>
+        <div id="main" style="
+                display: flex;
+                flex-direction: column;
+                height: 96vh;
+            ">
+            <header id="header">
+                <h1 id="h1title" class="h1big">
+                    html File Manager
+                </h1>
+            </header>
+            <article id="article", class="artbig">
+                <div id="artbody">
+                    <div class="foggy-div border-div"
+                        style="
+                            width: auto;
+                            margin-left: 20px;
+                            margin-right: 20px;
+                            line-height: 30px;
+                        ">
+                        <p>
+                            Manage your files efficiently. <br>
+                            Directly in your browser.
+                        </p>
+                    </div>
+                    <div
+                        style="
+                            margin-top: 70px;
+                            font-size: small;
+                            display: flex;
+                            justify-content: center;
+                        ">
+                        <label id="DAIlabel" for="directoryAccessInput" class="button-like visible-div"
+                            style="
+                                padding: 10px;
+                                margin-right: 5px;
+                                border-style: dashed;
+                            ">
+                            <input id="directoryAccessInput" type="file" webkitdirectory directory multiple oninput="onFileInput()"></input>
+                            select a folder
+                        </label>
+                        <div class="visible-div" title="Why should i select a folder?" onclick="alert(whySelectFolder)"
+                            style="
+                                cursor: pointer;
+                            ">?</div>
+                    </div>
+                    <button id="startBtn" disabled class="visible-div" onclick="start()"
+                        style="
+                            margin-top: 10px;
+                            font-size: x-large;
+                        ">
+                        <p style="
+                            margin: 0px;
+                            margin-left: 20px;
+                            margin-right: 20px;
+                        ">START</p>
+                    </button>
+                </div>
+            </article>
+            <footer id="footer">
+                'html File Manager' - © DB_dev_Studios <br>
+                please do not distribute
+            </footer>
+        </div>
+    </body>
+</html>

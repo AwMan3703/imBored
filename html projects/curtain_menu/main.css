@@ -1,0 +1,121 @@
+:root {
+    --theme-main-color: hotpink;
+    --theme-main-bgcolor: bisque;
+    --theme-dark-color: rgb(185, 53, 119);
+    --theme-dark-bgcolor: rgb(188, 160, 125);
+    --theme-light-color: rgb(245, 136, 191);
+    --theme-light-bgcolor: rgb(255, 243, 229);
+
+    --theme-main-txtcolor: white;
+    --theme-secondary-txtcolor: rgba(255, 255, 255, 0.5);
+
+    --default-transition: all .3s ease-in-out;
+
+    --navbar-height: 14vh;
+}
+
+* {
+    color: var(--theme-main-txtcolor);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    transition: var(--default-transition);
+}
+
+body {
+    margin: 0px;
+    background-color: var(--theme-main-bgcolor);
+}
+
+h1, h2, h3, h4, h5 {
+    margin-block: 0px;
+    margin-inline: 10px;
+    user-select: none;
+}
+h1 {
+    text-transform: uppercase;
+}
+h3 {
+    opacity: 50%;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    padding: .5% 5%;
+    background-color: var(--theme-main-color);
+}
+button:hover {
+    background-color: var(--theme-dark-color);
+}
+button:active {
+    background-color: var(--theme-light-color);
+}
+
+#layers-container {
+    height: var(--navbar-height);
+    transition: var(--default-transition);
+}
+#layers-container:hover, #layers-container:hover>#navbar-layer-back {
+    height: calc(var(--navbar-height) + 2vh);
+}
+
+#navbar-layer-shadow {
+    height: var(--navbar-height);
+    background-image: linear-gradient(0deg, transparent 0%, var(--theme-dark-bgcolor) 100%);
+}
+#navbar-layer-back {
+    justify-content: space-evenly;
+    align-items: flex-end;
+    padding-bottom: 20px;
+}
+#navbar-layer-front {
+    justify-content: space-between;
+    height: var(--navbar-height);
+}
+#navbar-layer-content {
+    padding-inline: 3%;
+    width: inherit;
+    align-items: center;
+    height: var(--navbar-height);
+}
+#layers-container:hover>#navbar-layer-front, #layers-container:hover>#navbar-layer-content {
+    height: calc(var(--navbar-height) - 2vh);
+}
+#layers-container:hover>#navbar-layer-content {
+    opacity: 0%;
+}
+.navbar-layer {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    transition: var(--default-transition) !important;
+}
+
+#curtain-right {
+    transform: scale(-1, 1);
+}
+#layers-container:hover>#navbar-layer-front>.curtain {
+    border-radius: 0 0 100%;
+}
+.curtain {
+    background-color: var(--theme-main-color);
+    display: flex;
+    overflow: hidden;
+    width: 50%;
+    transition: var(--default-transition);
+}
+.curtain-folds { /* There has to be an easier way to do this, but im not that smart and it's 2am */
+    flex: 1;
+    background-image: linear-gradient(70deg, var(--theme-main-color) 0%, transparent 50%),
+    linear-gradient(-5deg, transparent 2%, var(--theme-dark-color) 18%, transparent 34%, var(--theme-dark-color) 50%, transparent 66%, var(--theme-dark-color) 82%, transparent 98%);
+    transition: opacity, .3s ease-in-out;
+    opacity: 0%;
+}
+#layers-container:hover>#navbar-layer-front>.curtain {
+    width: 49.5%;
+    margin-top: -5px;
+    box-shadow: inset -10px -10px 20px 0px var(--theme-dark-color);
+}   
+#layers-container:hover>#navbar-layer-front>.curtain>.curtain-folds {
+    opacity: 100%;
+}

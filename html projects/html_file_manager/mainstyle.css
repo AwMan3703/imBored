@@ -1,0 +1,134 @@
+body {
+    background-color: rgb(7, 0, 10);
+    color: aqua;
+    margin: 0;
+    font-family: Courier, 'Courier New', monospace;
+    text-align: center;
+    user-select: none;
+    text-shadow: 2px 2px 4px #110024;
+    transition: 150ms;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+a {
+    color: #a2a0ff;
+}
+
+a:active {
+    color: #20d6ff;
+}
+
+a:visited {
+    color: #7a78f5;
+}
+
+header, .header-like {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+header.hdsmall {
+    justify-content: flex-start;
+}
+
+h1 {
+    animation: cubic-bezier(0.63, 0.03, 0.43, 1.1);
+    transition: 350ms;
+    text-align: center;
+    font-weight: unset;
+}
+
+h1.h1big {
+    font-size: xxx-large;
+    margin: 60px;
+}
+
+h1.h1small {
+    font-size: x-large;
+    margin: 20px;
+}
+
+article {
+    animation: cubic-bezier(0.63, 0.03, 0.43, 1.1);
+    transition: 350ms;
+}
+
+article.artbig {
+    opacity: 100%;
+    fill-opacity: 100%;
+}
+
+article.artsmall {
+    opacity: 0%;
+    fill-opacity: 0%;
+}
+
+div, button, .button-like {
+    padding: 10px;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.basic-styled-div, .border-div, .visible-div, .foggy-div {
+    border-radius: 10px;
+    width: fit-content;
+    mix-blend-mode: screen;
+    background-color: rgb(8, 0, 22);
+}
+
+.border-div, .visible-div {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #20d6ff;
+}
+
+.foggy-div {
+    backdrop-filter: blur(70px);
+    box-shadow: 0px 5px 10px -10px #000000;
+}
+
+.classic-div {
+    background-color: rgb(8, 0, 22);
+    box-shadow: 0px 5px 20px 0px #000000;
+    mix-blend-mode: screen;
+}
+
+input[type='file'] {
+    display: none;
+}
+
+button, .button-like {
+    animation: cubic-bezier(0.52, 0.12, 0.66, 1.43);
+    transition: 50ms;
+    cursor: pointer;
+}
+
+button:hover, .button-like:hover {
+    padding: 15px;
+    border-color: aliceblue;
+}
+
+button:active, .button-like:active {
+    padding: 12px;
+    color: aliceblue;
+    filter: brightness(2.5);
+}
+
+button:disabled, .button-like:disabled {
+    filter: grayscale(1);
+    cursor: no-drop;
+    animation: none !important;
+}
+
+footer, .footer-like {
+    color: aliceblue;
+    bottom: 20px;
+    margin-top: auto;
+    margin-bottom: 10px;
+    font-family: monospace;
+    opacity: 35%;
+}

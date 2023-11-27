@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="_index/main.js"></script>
+        <link rel="stylesheet" href="_index/style.css">
+        <title>Htmltests Index</title>
+    </head>
+    <body onload="setup(document.getElementById('project-menu'), document.getElementsByTagName('projectdata'))">
+        <div id="list">
+            <projectdata path="html_file_manager/index.html">Html file manager</projectdata>
+            <projectdata path="curtain_menu/index.html">Curtain menu</projectdata>
+            <projectdata path="cat/index.html">Cat</projectdata>
+
+            <h1>Choose a project</h1>
+            <ul id="project-menu"></ul>
+        </div>
+        <div id="preview-box">
+            <img src="_index/img/brokenimgiconcolor.svg" alt=""
+                style="
+                    width: 10vw;
+                    height: 10vw;
+                    opacity: 25%;
+                "
+            >
+        </div>
+    </body>
+</html>

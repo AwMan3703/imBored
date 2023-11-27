@@ -1,0 +1,67 @@
+
+:root {
+    --color-main: rgb(255, 218, 228);
+    --color-strong: rgb(252, 93, 127);
+    --color-secondary: rgb(229, 192, 196);
+    --color-neutral: rgb(150, 94, 98);
+
+    --color-text-main: rgb(165, 12, 45);
+    --color-text-neg: rgb(255, 226, 234);
+}
+
+* {
+    transition: all .1s ease-in-out;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    font-size: xx-large;
+    font-weight: 600;
+    color: var(--color-text-main);
+    user-select: none;
+}
+
+body {
+    min-height: 100dvh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-wrapper {
+    display: flex;
+    justify-content: center;
+    background-color: var(--color-main);
+    border-radius: 20px;
+    margin: 20px;
+}
+.button-wrapper:hover {
+    box-shadow: 0 0 500px 0px var(--color-secondary);
+}
+
+.button {
+    padding-inline: 5dvw;
+    padding-block: 5dvh;
+    background-color: var(--color-main);
+    border-radius: inherit;
+    cursor: pointer;
+}
+.button-wrapper:hover > .button {
+    padding-inline: 4dvw;
+}
+.button-wrapper:hover > .button:hover {
+    padding-inline: 6dvw;
+}
+.button-wrapper:active:has(.button-b:active), .button:active {
+    background-color: var(--color-secondary);
+}
+
+.button-a {
+    color: var(--color-text-neg);
+    background-color: var(--color-strong);
+    transform: rotateZ(-7.5deg);
+}
+.button-a:active {
+    background-color: var(--color-neutral);
+}
+.button-b {
+    margin-inline-start: -1dvw;
+}
