@@ -1,0 +1,8 @@
+Image downloader
+
+in popup.html
+ • button for starting the content script
+
+in content_script.js
+ • scan the entire page, collect all the images
+ • for every image, add a button that downloads it

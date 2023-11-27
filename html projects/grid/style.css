@@ -1,0 +1,54 @@
+
+:root {
+    --color-background-main: rgb(231, 222, 212);
+    --color-text-main: rgb(94, 87, 87);
+    --color-accent-main: rgb(130, 14, 116);
+}
+
+* {
+    user-select: none;
+    transition: all .1s ease;
+    color: var(--color-text-main);
+    font-family: menlo, 'Courier New', Courier, monospace;
+    font-size: large;
+    font-weight: 600;
+}
+
+body {
+    margin: 0;
+    background-color: black;
+}
+
+/*.crossair-hover:hover::before {
+    position: absolute;
+    content: "";
+    width: 150px;
+    height: 100px;
+    transform: skew(-20deg);
+    background: red;
+}*/
+
+#main-grid-container {
+    width: 100dvw;
+    height: 100dvh;
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    grid-template-rows: 10dvh, 80dvh, 10dvh;
+    gap: 1px;
+}
+
+.main-grid-item {
+    background-color: var(--color-background-main);
+    padding-block: 60px;
+    text-align: center ;
+    text-transform: uppercase;
+}
+.main-grid-item:hover {
+    background-color: rgb(232, 173, 173);
+    border-radius: 20px;
+}
+.main-grid-item:active {
+    background-color: rgb(255, 198, 198);
+}
+
+

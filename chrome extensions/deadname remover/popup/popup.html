@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="popup.css"></link>
+    </head>
+    <body>
+        <div class="title-bg">
+            <h3>Replacement options</h3>
+        </div>
+
+        <div class="wrapper">
+            <div class="wrapper horizontal" style="margin-top: 0%; margin-inline: 0%;">
+                Deadname
+                <a id="hide-deadname">[HIDE]</a>
+            </div>
+            <input id="frontend-toreplace" class="blurry" type="text" placeholder="1st name"></input>
+            <input id="frontend-toreplace2" class="blurry" type="text" placeholder="2nd name"></input>
+        </div>
+        <div class="wrapper">
+            Nice name
+            <input id="frontend-replacewith" type="text" placeholder="1st name"></input>
+            <input id="frontend-replacewith2" type="text" placeholder="2nd name"></input>
+        </div>
+
+        <div class="wrapper">
+            timeout:
+            <input id="frontend-reptimeout" type="number" min="0" max="10000" step="500" value="750">
+        </div>
+
+        <div class="wrapper horizontal">
+            Active
+            <label class="switch">
+                <input id="replacement-switch" type="checkbox">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="wrappe horizontal">
+            <button id="savebtn">save</button>
+            <button id="catbtn">cat</button>
+        </div>
+
+        <p id="credits" class="wrapper">
+            made with &#10084 by <span id="credits-link">@Aw_Man3703<span>
+        </p>
+
+        <script src="popup.js"></script>
+    </body>
+</html>

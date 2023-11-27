@@ -1,0 +1,121 @@
+body {
+    margin: 10px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    /*align-items: center;*/
+}
+
+h3 {
+    color: white;
+    margin: 5px;
+    text-shadow: 0px 0px 2px #020849;
+}
+
+a {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+a:hover {
+    color: #020849;
+}
+
+a:active {
+    color: purple;
+}
+
+input.blurry {
+    filter: blur(3.5px);
+}
+
+.title-bg {
+    background-image: linear-gradient(90deg, #00bfff, #fad1d0, #ffffff, #fad1d0, #00bfff);
+    background-color: grey;
+    border-radius: 5px;
+}
+
+.wrapper {
+    margin-inline: 10px;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    /*align-items: center;*/
+}
+
+.wrapper.horizontal {
+    flex-direction: row;
+}
+
+#savebtn {
+    background-color: #a9def0;
+    margin-inline: 10px;
+    margin-top: 15px;
+    border-radius: 5px;
+}
+
+#credits {
+    color: gray;
+}
+
+#hide-deadname {
+    opacity: 50%;
+}
+
+/* Stuff for the switch input lmao */
+.switch {
+    margin-left: 10px;
+    position: relative;
+    display: inline;
+    width: 30px;
+    height: 17px;
+}
+
+/* hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 17px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(13px);
+    -ms-transform: translateX(13px);
+    transform: translateX(13px);
+}
