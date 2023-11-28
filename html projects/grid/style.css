@@ -1,9 +1,17 @@
 
-:root {
+:root {}
+
+.lightmode {
     --color-background-main: rgba(239, 235, 228, 0.699);
     --color-text-main: rgb(46, 38, 38);
     --color-accent-main: rgba(134, 22, 121, 0.6);
 }
+.darkmode {
+    --color-background-main: rgba(60, 59, 57, 0.699);
+    --color-text-main: rgb(221, 235, 242);
+    --color-accent-main: rgba(134, 22, 121, 0.6);
+}
+
 
 * {
     user-select: none;
@@ -27,6 +35,26 @@ h1 {
     font-size: 10vh;
     text-transform: uppercase;
     margin-inline: 4%;
+}
+
+button {
+    margin: 30px;
+
+    border: 2px rgb(62, 62, 62) solid;
+    border-radius: 20px;
+
+    background-color: var(--color-background-main);
+
+    cursor: pointer;
+}
+button:hover {
+    font-size: larger;
+    margin: 25px;
+}
+button:active {
+    font-size: large;
+    filter: brightness(110%);
+    margin: 28px;
 }
 
 .highlighted-pink {
@@ -85,6 +113,10 @@ h1 {
     grid-column: 1 / 3;
 }
 
+#displayModeController {
+    aspect-ratio: 1;
+}
+
 .circle {
     position: absolute;
     aspect-ratio: 1;
@@ -98,11 +130,11 @@ h1 {
 .stripes {
     background-image: linear-gradient(45deg, 
         transparent 25%,
-        #000000 25%,
-        #000000 50%,
+        var(--color-text-main) 25%,
+        var(--color-text-main) 50%,
         transparent 50%,
         transparent 75%,
-        #000000 75%,
-        #000000 100%);
+        var(--color-text-main) 75%,
+        var(--color-text-main) 100%);
         background-size: 84.85px 84.85px;
 }

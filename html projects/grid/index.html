@@ -7,8 +7,9 @@
 
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="fonts.css">
+        <script src="displayMode.js"></script>
     </head>
-    <body>
+    <body class="darkmode">
         <div id="bubbles-container">
             <div style="width: 30dvw; height: 10dvh; background-color: yellow; filter: blur(80px);"></div>
         </div>
@@ -16,6 +17,7 @@
         <div id="main-grid-container">
             <div id="header" class="main-grid-item">
                 <h1 class="highlighted-1">=header=</h1>
+                <button id="displayModeController" onclick="toggleDisplayMode()">toggle mode</button>
             </div>
 
             <div id="deco1" class="main-grid-item">
