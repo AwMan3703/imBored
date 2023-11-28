@@ -1,0 +1,31 @@
+
+@font-face {
+    font-family: 'aesthetic';
+    src: url('fonts/aesthetic.woff');
+}
+
+@font-face {
+    font-family: 'against';
+    src: url('fonts/against_regular.ttf');
+}
+
+@font-face {
+    font-family: 'chatime';
+    src: url('fonts/chatime.otf');
+}
+
+@font-face {
+    font-family: 'qeilab';
+    src: url('fonts/qeilab.otf');
+}
+
+@font-face {
+    font-family: 'quackiez';
+    src: url('fonts/quakiez.ttf');
+}
+
+@font-face {
+    font-family: 'rosie';
+    src: url('fonts/rosie_brown.otf');
+}
+

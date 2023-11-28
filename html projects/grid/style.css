@@ -2,7 +2,7 @@
 :root {
     --color-background-main: rgb(231, 222, 212);
     --color-text-main: rgb(94, 87, 87);
-    --color-accent-main: rgb(130, 14, 116);
+    --color-accent-main: rgba(134, 22, 121, 0.6);
 }
 
 * {
@@ -10,6 +10,7 @@
     transition: all .1s ease;
     color: var(--color-text-main);
     font-family: menlo, 'Courier New', Courier, monospace;
+    font-family: chatime;
     font-size: large;
     font-weight: 600;
 }
@@ -17,6 +18,19 @@
 body {
     margin: 0;
     background-color: black;
+}
+
+h1, h2, h3, h4, h5 { margin: 0; }
+h1 {
+    font-family: aesthetic;
+    font-size: 10vh;
+    text-transform: uppercase;
+    margin-inline: 7%;
+}
+
+.highlighted-pink {
+    color: var(--color-background-main);
+    background-color: var(--color-accent-main);
 }
 
 /*.crossair-hover:hover::before {
@@ -29,26 +43,50 @@ body {
 }*/
 
 #main-grid-container {
+    min-width: fit-content;
     width: 100dvw;
     height: 100dvh;
+
     display: grid;
-    grid-template-columns: repeat(5, auto);
-    grid-template-rows: 10dvh, 80dvh, 10dvh;
+
+    grid-template-columns: 200px auto 170px;
+    grid-template-rows: 15dvh 35dvh 35dvh 15dvh;
     gap: 1px;
+}
+#header {
+    grid-row: 1;
+    grid-column: 1 / 3;
+}
+#deco1 {
+    grid-row: 1 / span 2;
+    grid-column: 3;
+}
+#content {
+    grid-area: 2 / 2 / span 2 / span 1;
+}
+#deco2 {
+    grid-row: 2 / span 2;
+    grid-column: 1;
+}
+#deco3 {
+    grid-row: 3 / 5;
+    grid-column: 3;
+}
+#footer {
+    grid-row: 4;
+    grid-column: 1 / 3;
 }
 
 .main-grid-item {
+    display: inline-flex;
+    justify-content: space-between;
     background-color: var(--color-background-main);
-    padding-block: 60px;
-    text-align: center ;
-    text-transform: uppercase;
 }
-.main-grid-item:hover {
+/*.main-grid-item:hover {
     background-color: rgb(232, 173, 173);
-    border-radius: 20px;
+    border-radius: 15px;
 }
 .main-grid-item:active {
     background-color: rgb(255, 198, 198);
-}
-
+}*/
 
