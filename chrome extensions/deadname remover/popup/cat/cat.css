@@ -3,6 +3,8 @@ body {
     background-color: rgb(46, 44, 44);
     font-family: 'Courier New', Courier, monospace;
     user-select: none;
+    display: flex;
+    justify-content: center;
 }
 
 #wrapper {
