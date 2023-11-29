@@ -1,22 +1,27 @@
 
-:root {}
+:root {
+    --std-margin: 30px;
 
-.lightmode {
-    --color-background-main: rgba(239, 235, 228, 0.699);
+    --color-background-main: rgba(226, 222, 215, 0.699);
+    --color-border-main: rgba(122, 122, 122, 0.699);
     --color-text-main: rgb(46, 38, 38);
     --color-accent-main: rgba(134, 22, 121, 0.6);
 }
 .darkmode {
     --color-background-main: rgba(60, 59, 57, 0.699);
-    --color-text-main: rgb(221, 235, 242);
+    --color-border-main: rgba(62, 62, 62, 0.699);
+    --color-text-main: rgb(233, 240, 239);
     --color-accent-main: rgba(134, 22, 121, 0.6);
 }
 
 
 * {
     user-select: none;
+
     transition: all .1s ease;
+
     color: var(--color-text-main);
+
     font-family: menlo, 'Courier New', Courier, monospace;
     font-family: chatime;
     font-size: large;
@@ -34,13 +39,15 @@ h1 {
     font-family: qeilab;
     font-size: 10vh;
     text-transform: uppercase;
-    margin-inline: 4%;
+    margin-inline: var(--std-margin);
 }
 
 button {
-    margin: 30px;
+    width: min-content;
+    height: min-content;
+    padding: 10px;
 
-    border: 2px rgb(62, 62, 62) solid;
+    border: 2px var(--color-border-main) solid;
     border-radius: 20px;
 
     background-color: var(--color-background-main);
@@ -49,12 +56,10 @@ button {
 }
 button:hover {
     font-size: larger;
-    margin: 25px;
 }
 button:active {
     font-size: large;
     filter: brightness(110%);
-    margin: 28px;
 }
 
 .highlighted-pink {
@@ -115,6 +120,8 @@ button:active {
 
 #displayModeController {
     aspect-ratio: 1;
+    align-self: center;
+    margin-inline-end: 30px;
 }
 
 .circle {
