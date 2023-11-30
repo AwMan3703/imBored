@@ -5,8 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Header</title>
 
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="fonts.css">
+        <link rel="stylesheet" href="css/displayMode.css">
+        <link rel="stylesheet" href="css/defaults.css">
+        <link rel="stylesheet" href="css/utility.css">
+        <link rel="stylesheet" href="css/theme-classes.css">
+        <link rel="stylesheet" href="css/theme-ids.css">
+        <link rel="stylesheet" href="css/fonts.css">
     </head>
 
     <body>
@@ -19,8 +23,8 @@
             <div id="header" class="main-grid-item">
                 <h1 class="highlighted-1">=header=</h1>
                 <div class="tight-container horizontal">
-                    <button id="displayModeController" class="header-button" onclick="toggleDisplayMode()">toggle mode</button>
-                    <button class="header-button">account</button>
+                    <button id="displayModeButton" class="header-button" onclick="toggleDisplayMode()">toggle mode</button>
+                    <button id="accountButton" class="header-button">account</button>
                 </div>
             </div>
 
@@ -50,8 +54,8 @@
             </div>
         </div>
 
-        <script src="displayMode.js"></script>
-        <script src="bubbles.js"></script>
-        <script src="realTimeClock.js"></script>
+        <script src="js/displayMode.js"></script>
+        <script src="js/bubbles.js"></script>
+        <script src="js/realTimeClock.js"></script>
     </body>
 </html>

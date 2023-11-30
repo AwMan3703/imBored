@@ -1,0 +1,26 @@
+
+
+.circle {
+    aspect-ratio: 1;
+    border-radius: 100%;
+}
+
+.highlighted-pink {
+    color: var(--color-background-main);
+    background-color: var(--color-accent-main);
+}
+
+.tight-container {
+    display: flex;
+}
+.tight-container.horizontal {
+    flex-direction: row;
+}
+.tight-container.vertical {
+    flex-direction: column;
+}
+
+.vertical-text {
+    transform: rotateZ(180deg);
+    writing-mode: vertical-rl;
+}

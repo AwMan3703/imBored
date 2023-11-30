@@ -6,8 +6,6 @@ const bubbleColors = [
     '#ff0000',
     '#ffa600',
     '#ffee00',
-    '#00ff00',
-    'green',
     '#0000ff',
     '#8000ff',
     '#9500ff',

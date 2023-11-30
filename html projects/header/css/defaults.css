@@ -1,0 +1,55 @@
+
+:root {
+    --std-margin: 30px;
+}
+
+* {
+    user-select: none;
+
+    transition: all .1s ease;
+
+    color: var(--color-text-secondary);
+
+    font-family: menlo, 'Courier New', Courier, monospace;
+    font-family: chatime;
+    font-size: large;
+    font-weight: 600;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: black;
+    position: relative;
+}
+
+h1, h2, h3, h4, h5 {
+    margin: 0;
+    font-family: qeilab;
+    color: var(--color-text-main);
+}
+h1 {
+    font-size: 10vh;
+    text-transform: uppercase;
+    margin-inline: var(--std-margin);
+}
+
+button {
+    width: min-content;
+    height: min-content;
+    padding: 10px;
+
+    border: 2px var(--color-border-main) solid;
+    border-radius: 20px;
+
+    background-color: var(--color-background-main);
+
+    cursor: pointer;
+}
+button:hover {
+    padding: 15px;
+}
+button:active {
+    padding: 13px;
+    filter: brightness(110%);
+}
