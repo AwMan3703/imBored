@@ -18,28 +18,30 @@
         <div id="main-grid-container">
             <div id="header" class="main-grid-item">
                 <h1 class="highlighted-1">=header=</h1>
-                <button id="displayModeController" onclick="toggleDisplayMode()">toggle mode</button>
+                <div class="tight-container horizontal">
+                    <button id="displayModeController" class="header-button" onclick="toggleDisplayMode()">toggle mode</button>
+                    <button class="header-button">account</button>
+                </div>
             </div>
 
             <div id="deco1" class="main-grid-item">
                     deco1
-
             </div>
 
             <div id="content" class="main-grid-item">
                     content
-
             </div>
 
             <div id="deco2" class="main-grid-item">
                 <div class="stripes"
-                style="width: 20%; height: 100%;"></div>
-                    deco2
+                style="min-width: 5vmin; height: 100%;"></div>
+
+                <h5 class="real-time-clock vertical-text"
+                style="font-size: 6vmin; text-transform: lowercase; margin-inline-end: 20px;"></h5>
             </div>
 
             <div id="deco3" class="main-grid-item">
                     deco3
-
             </div>
 
             <div id="footer" class="main-grid-item">
@@ -50,5 +52,6 @@
 
         <script src="displayMode.js"></script>
         <script src="bubbles.js"></script>
+        <script src="realTimeClock.js"></script>
     </body>
 </html>
