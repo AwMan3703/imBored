@@ -31,7 +31,6 @@ h1, h2, h3, h4, h5 {
 h1 {
     font-size: 10vmin;
     text-transform: uppercase;
-    margin-inline: var(--std-margin);
 }
 
 button {
@@ -49,9 +48,8 @@ button {
     text-wrap: nowrap;
 }
 button:hover {
-    padding: 15px;
+    background-color: var(--color-background-lighter);
 }
 button:active {
-    padding: 13px;
     filter: brightness(110%);
 }

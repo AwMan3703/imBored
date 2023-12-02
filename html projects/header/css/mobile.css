@@ -5,6 +5,10 @@
         font-size: 3vmax;
     }
 
+    #main-grid-container {
+        grid-template-columns: min-content 1fr 0px;
+    }
+
     #displayModeButton {
         aspect-ratio: unset;
     }
