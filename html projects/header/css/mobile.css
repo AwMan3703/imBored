@@ -1,0 +1,11 @@
+
+/* mobile only styles */
+@media only screen and (max-width: 550px) {
+    * {
+        font-size: 3vmax;
+    }
+
+    #displayModeButton {
+        aspect-ratio: unset;
+    }
+}

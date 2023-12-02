@@ -24,3 +24,7 @@
     transform: rotateZ(180deg);
     writing-mode: vertical-rl;
 }
+
+.margin-block {
+    margin-block: var(--std-margin);
+}
