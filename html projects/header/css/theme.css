@@ -21,7 +21,6 @@
 .header-button {
     align-self: center;
     min-height: 50%;
-    margin-inline-end: 30px;
     color: var(--color-text-secondary);
 }
 
