@@ -23,13 +23,13 @@ body {
     cursor: pointer;
     position: absolute;
     top: 115px;
-    left: 195px;
+    left: 182px;
     width: 160px;
     height: 60px;
     transform: rotate(17deg);
 }
 
-.heart_particles {
+.heart_particles {
     animation-duration: 1.4s;
     animation-timing-function: ease-in-out;
 }
