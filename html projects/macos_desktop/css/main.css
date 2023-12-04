@@ -1,0 +1,124 @@
+
+:root {
+    --color-menubar: rgba(0, 0, 0, 0.5);
+    --color-menubarbutton-active: rgba(255, 255, 255, 0.1);
+
+    --material-color-background: rgba(255, 255, 255, 0.5);
+    --material-border: 1px rgba(220, 220, 220, 0.7) solid;
+    --material-border-radius1: 20px;
+    --material-border-radius2: 15px;
+    --material-border-radius3: 10px;
+}
+
+* {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+body {
+    height: 100lvh;
+    width: 100lvw;
+    margin: 0;
+
+    display: grid;
+    grid-template-rows: auto 1fr;
+
+    background-color: black;
+    background-image: url('../img/bg.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#menu-bar {
+    grid-row: 1;
+
+    color: rgba(255, 255, 255, 0.9);
+    background-color: var(--color-menubar);
+
+    user-select: none;
+}
+#menu-bar button {
+    color: inherit;
+
+    text-transform: capitalize;
+
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+
+    padding-block: .7%;
+    padding-inline: 13px;
+}
+#menu-bar button:active {
+    background-color: var(--color-menubarbutton-active);
+}
+
+#menu-bar-home,
+#menu-bar-apphome {
+    font-weight: bold;
+}
+#menu-bar-clock {
+    opacity: 90%;
+}
+
+#dock {
+    justify-self: center;
+
+    width: fit-content;
+    min-width: 10%;
+    height: fit-content;
+    min-height: 10px;
+
+    margin-block-end: 10px;
+    padding-block: 10px;
+    padding-inline: 5px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#dock button {
+    height: 70px;
+    margin-block-end: 10px;
+    margin-inline: 5px;
+    aspect-ratio: 1;
+    border-radius: var(--material-border-radius2);
+}
+#dock button.open::after {
+    content: ".";
+    font-weight: 900;
+    display: flex;
+    justify-content: center;
+    transform: translateY(280%);
+}
+
+
+
+
+.material {
+    background-color: var(--material-color-background);
+    backdrop-filter: blur(30px);
+    box-shadow:
+        0 .8px 0 0px var(--material-color-background) inset,
+        0 0 0 1px rgba(0, 0, 0, 0.7);
+}
+.border-radius {
+    border-radius: var(--material-border-radius1);
+}
+
+.tight-container {
+    display: flex;
+}
+.wide-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.vstack {
+    display: flex;
+    flex-direction: column;
+}
+.hstack {
+    display: flex;
+    flex-direction: row;
+}
