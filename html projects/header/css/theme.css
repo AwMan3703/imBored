@@ -109,7 +109,8 @@
     display: none;
     position: absolute;
     transform: rotateZ(9deg) translateX(-20%) translateY(-9.5vmin);
-    font-size: 5vmin;
+    font-size: 4vmin;
+    padding: 1vmin;
 }
 
 #accountButton {
