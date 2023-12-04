@@ -24,6 +24,12 @@
     color: var(--color-text-secondary);
 }
 
+.tag {
+    padding: calc(var(--std-margin) / 3);
+    border-radius: 10px;
+    background-color: var(--color-accent-secondary);
+}
+
 .bubble {
     position: absolute;
     filter: blur(110px);
@@ -97,6 +103,13 @@
 }
 #main-title + * {
     margin-block-start: 0;
+}
+
+#mobile-tag {
+    display: none;
+    position: absolute;
+    transform: rotateZ(9deg) translateX(-20%) translateY(-9.5vmin);
+    font-size: 5vmin;
 }
 
 #accountButton {

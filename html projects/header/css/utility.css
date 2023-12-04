@@ -13,11 +13,21 @@
 .tight-container {
     display: flex;
 }
-.tight-container.horizontal {
+.wide-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.horizontal {
     flex-direction: row;
 }
-.tight-container.vertical {
+.vertical {
     flex-direction: column;
+}
+
+.flex-gap {
+    gap: 5%;
 }
 
 .vertical-text {
@@ -27,4 +37,7 @@
 
 .margin-block {
     margin-block: var(--std-margin);
+}
+.margin-bottom {
+    margin-block-end: var(--std-margin);
 }
