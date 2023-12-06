@@ -5,13 +5,16 @@
 
     --material-color-background: rgba(255, 255, 255, 0.5);
     --material-border: 1px rgba(220, 220, 220, 0.7) solid;
-    --material-border-radius1: 20px;
+    --material-border-radius1: 25px;
     --material-border-radius2: 15px;
     --material-border-radius3: 10px;
+
+    --transition-default: all .07s ease-out;
 }
 
 * {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    transition: var(--transition-default);
 }
 
 body {
@@ -66,6 +69,7 @@ body {
 
     width: fit-content;
     min-width: 10%;
+    max-height: min-content;
     height: fit-content;
     min-height: 10px;
 
@@ -78,18 +82,29 @@ body {
     align-items: center;
 }
 #dock button {
-    height: 70px;
+    height: 7dvh;
     margin-block-end: 10px;
     margin-inline: 5px;
     aspect-ratio: 1;
-    border-radius: var(--material-border-radius2);
+    border-radius: 25% 25%;/*var(--material-border-radius2);*/
+}
+#dock button:hover {
+    height: 10dvh;
+    margin-top: -3dvh;
 }
 #dock button.open::after {
     content: ".";
     font-weight: 900;
     display: flex;
     justify-content: center;
-    transform: translateY(280%);
+    transform: translateY(40px);
+}
+#dock button.open:hover::after {
+    content: ".";
+    font-weight: 900;
+    display: flex;
+    justify-content: center;
+    transform: translateY(40px);
 }
 
 
