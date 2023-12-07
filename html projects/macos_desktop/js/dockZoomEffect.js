@@ -2,15 +2,16 @@
 const max = Math.max;
 const min = Math.min;
 
-const minScale = document.getElementById("appicon-finder");//.style.height.slice(0, -2);
-console.log(minScale);
+const minScale = document.getElementById("appicon-finder").offsetHeight;//.slice(0, -2);
 const maxScale = 400;
+console.log(` : ${minScale}`);
 
-const dockRect = document.getElementById('dock').getBoundingClientRect();
+let dockRect, inx, iny;
 
 function updateDockZoom(mx, my) {
-    let inx = dockRect.x < mx && mx < dockRect.x + dockRect.width;
-    let iny = dockRect.y < my && my < dockRect.y + dockRect.height;
+    dockRect = document.getElementById('dock').getBoundingClientRect();
+    inx = dockRect.x < mx && mx < dockRect.x + dockRect.width;
+    iny = dockRect.y < my && my < dockRect.y + dockRect.height;
 
     const appicons = document.querySelectorAll('#dock button');
     let rect, ax, ay, dx, dy, scale; // element rect, iconx, icony, deltax, deltay, distance, scale
@@ -36,9 +37,7 @@ function updateDockZoom(mx, my) {
         scale = maxScale - Math.sqrt(dx * dx + dy * dy);
         scale /= 4;
         a.style.height = max(scale, minScale) + 'px';
-        a.style.marginTop = 0-(max(scale, minScale)/2) + 'px';
-
-        document.getElementById("stdout").innerText = 'stdout: ' + minScale;
+        a.style.marginTop = (0-max(scale, minScale)) + minScale + 'px';
     }
 }
 

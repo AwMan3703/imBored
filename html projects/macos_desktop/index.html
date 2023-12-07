@@ -6,6 +6,7 @@
         <title>Document</title>
 
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/devtools.css">
     </head>
 
     <body>
@@ -32,37 +33,39 @@
             style="color: whitesmoke;"></p>
         </div>
 
-        <div id="dock" class="material border-radius tight-container">
-            <div class="appicon-wrapper">
-                <button id="appicon-finder" class="open"></button>
-            </div>
-            <div class="appicon-wrapper">
-                <button></button>
-            </div>
-            <div class="appicon-wrapper">
-                <button></button>
-            </div>
-            <div class="appicon-wrapper">
-                <button class="open"></button>
-            </div>
-            <div class="appicon-wrapper">
-                <button class="open"></button>
-            </div>
-            <div class="appicon-wrapper">
-                <button></button>
-            </div>
-            <div class="appicon-wrapper">
-                <button class="open"></button>
-            </div>
-            <div class="appicon-wrapper">
-                <button></button>
-            </div>
-            <div class="appicon-wrapper">
-                <button></button>
+        <div id="dock-wrapper">
+            <div id="dock" class="material border-radius tight-container">
+                <div class="appicon-wrapper">
+                    <button id="appicon-finder" data-icon="app-finder.png" class="load-icon open"></button>
+                </div>
+                <div class="appicon-wrapper">
+                    <button id="appicon-launcher" data-icon="app-launchpad.png" class="load-icon"></button>
+                </div>
+                <div class="appicon-wrapper">
+                    <button data-icon="" class="load-icon"></button>
+                </div>
+                <div class="appicon-wrapper">
+                    <button data-icon="" class="load-icon open"></button>
+                </div>
+                <div class="appicon-wrapper">
+                    <button data-icon="" class="load-icon open"></button>
+                </div>
+                <div class="appicon-wrapper">
+                    <button data-icon="" class="load-icon"></button>
+                </div>
+                <div class="appicon-wrapper">
+                    <button data-icon="" class="load-icon open"></button>
+                </div>
+                <div class="appicon-wrapper">
+                    <button data-icon="" class="load-icon"></button>
+                </div>
+                <div class="appicon-wrapper">
+                    <button data-icon="" class="load-icon"></button>
+                </div>
             </div>
         </div>
 
-
+        <script src="js/iconsLoader.js"></script>
         <script src="js/realTimeClock.js"></script>
         <script src="js/dockZoomEffect.js"></script>
     </body>
