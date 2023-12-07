@@ -2,8 +2,9 @@
 const max = Math.max;
 const min = Math.min;
 
-const minScale = document.getElementById("appicon-finder").style.minHeight.slice(0, -2);
-const maxScale = 500;
+const minScale = document.getElementById("appicon-finder");//.style.height.slice(0, -2);
+console.log(minScale);
+const maxScale = 400;
 
 const dockRect = document.getElementById('dock').getBoundingClientRect();
 
@@ -35,7 +36,7 @@ function updateDockZoom(mx, my) {
         scale = maxScale - Math.sqrt(dx * dx + dy * dy);
         scale /= 4;
         a.style.height = max(scale, minScale) + 'px';
-        a.style.marginTop = 0-(max(scale/2, minScale/2)) + 'px';
+        a.style.marginTop = 0-(max(scale, minScale)/2) + 'px';
 
         document.getElementById("stdout").innerText = 'stdout: ' + minScale;
     }
