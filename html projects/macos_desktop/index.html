@@ -7,6 +7,7 @@
 
         <link rel="stylesheet" href="css/main.css">
     </head>
+
     <body>
         <div id="menu-bar" class="wide-container">
             <div id="menu-bar-options" class="tight-container">
@@ -22,26 +23,47 @@
             <div id="menu-bar-widgets" class="tight-container">
                 <button>★</button>
                 <button>◉</button>
-                <button id="menu-bar-clock" class="real-time-clock">Mon 4 Dec 13:44:17</button>
+                <button id="menu-bar-clock" class="real-time-clock">[clock script failure]</button>
             </div>
         </div>
 
-        <div id="desktop"></div>
+        <div id="desktop">
+            <p id="stdout"
+            style="color: whitesmoke;"></p>
+        </div>
 
         <div id="dock" class="material border-radius tight-container">
-            <button class="open"></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button class="open"></button>
-            <button class="open"></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
+            <div class="appicon-wrapper">
+                <button id="appicon-finder" class="open"></button>
+            </div>
+            <div class="appicon-wrapper">
+                <button></button>
+            </div>
+            <div class="appicon-wrapper">
+                <button></button>
+            </div>
+            <div class="appicon-wrapper">
+                <button class="open"></button>
+            </div>
+            <div class="appicon-wrapper">
+                <button class="open"></button>
+            </div>
+            <div class="appicon-wrapper">
+                <button></button>
+            </div>
+            <div class="appicon-wrapper">
+                <button class="open"></button>
+            </div>
+            <div class="appicon-wrapper">
+                <button></button>
+            </div>
+            <div class="appicon-wrapper">
+                <button></button>
+            </div>
         </div>
 
 
         <script src="js/realTimeClock.js"></script>
+        <script src="js/dockZoomEffect.js"></script>
     </body>
 </html>

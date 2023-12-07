@@ -14,4 +14,3 @@ updateClocks();
 setInterval(function(){ 
     updateClocks();
 }, 1000);
-

@@ -1,7 +1,7 @@
 
 :root {
-    --color-menubar: rgba(0, 0, 0, 0.5);
-    --color-menubarbutton-active: rgba(255, 255, 255, 0.1);
+    --material-color-dark: rgba(0, 0, 0, 0.5);
+    --material-color-dark-active: rgba(255, 255, 255, 0.1);
 
     --material-color-background: rgba(255, 255, 255, 0.5);
     --material-border: 1px rgba(220, 220, 220, 0.7) solid;
@@ -26,7 +26,7 @@ body {
     grid-template-rows: auto 1fr;
 
     background-color: black;
-    background-image: url('../img/bg.jpg');
+    background-image: url('../img/desktop/background/1.jpg');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -36,7 +36,7 @@ body {
     grid-row: 1;
 
     color: rgba(255, 255, 255, 0.9);
-    background-color: var(--color-menubar);
+    background-color: var(--material-color-dark);
 
     user-select: none;
 }
@@ -53,7 +53,7 @@ body {
     padding-inline: 13px;
 }
 #menu-bar button:active {
-    background-color: var(--color-menubarbutton-active);
+    background-color: var(--material-color-dark-active);
 }
 
 #menu-bar-home,
@@ -64,47 +64,51 @@ body {
     opacity: 90%;
 }
 
+#desktop {
+    grid-row: 2;
+}
+
 #dock {
     justify-self: center;
 
     width: fit-content;
     min-width: 10%;
     max-height: min-content;
-    height: fit-content;
-    min-height: 10px;
+    height: 70px;
 
     margin-block-end: 10px;
-    padding-block: 10px;
+    padding-block: 8.5px;
     padding-inline: 5px;
 
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: visible;
 }
 #dock button {
-    height: 7dvh;
+    min-height: 60px;
     margin-block-end: 10px;
     margin-inline: 5px;
     aspect-ratio: 1;
-    border-radius: 25% 25%;/*var(--material-border-radius2);*/
+    background-color: var(--material-color-dark);
+    background-image: url('../img/dock/apps/default/default1.jpg');
+    background-size: contain;
+    /*border: none;*/
+    border-radius: 27%;
+    transform-origin: 50% 100%;
 }
-#dock button:hover {
-    height: 10dvh;
-    margin-top: -3dvh;
+#dock button:not(:has(img)) {
+    opacity: 50%;
 }
-#dock button.open::after {
-    content: ".";
-    font-weight: 900;
-    display: flex;
-    justify-content: center;
-    transform: translateY(40px);
-}
-#dock button.open:hover::after {
-    content: ".";
-    font-weight: 900;
-    display: flex;
-    justify-content: center;
-    transform: translateY(40px);
+#dock .appicon-wrapper:has(button.open)::after {
+    content: "";
+    display: block;
+    margin: auto;
+    margin-bottom: -5px; /* Must be equal to height */
+    height: 5px;
+    aspect-ratio: 1;
+    background-color: var(--material-color-dark);
+    border-radius: 50%;
 }
 
 
