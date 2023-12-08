@@ -103,9 +103,11 @@ body {
     margin-block-end: 10px;
     margin-inline: 5px;
     aspect-ratio: 1;
-    background-color: var(--material-color-dark);
-    background-image: url('../img/icons/default1.jpg');
-    background-size: contain;
+    background-color: transparent;
+    background-image: url('../img/icons/app-default1.jpg');
+    background-size: 101%;
+    background-position: center;
+    backdrop-filter: blur(150px);
     border: none;
     border-radius: 27%;
     transform-origin: 50% 100%;
@@ -113,9 +115,6 @@ body {
 #dock button:active {
     filter: brightness(70%);
     opacity: 75%;
-}
-#dock button:not(:has(img)) {
-    opacity: 50%;
 }
 #dock .appicon-wrapper:has(button.open)::after {
     content: "";
