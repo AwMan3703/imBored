@@ -11,15 +11,36 @@
 
     <body>
         <div id="menu-bar" class="wide-container">
-            <div id="menu-bar-options" class="tight-container">
-                <button id="menu-bar-home">❤︎</button>
-                <button id="menu-bar-apphome">finder</button>
-                <button>file</button>
-                <button>edit</button>
-                <button>view</button>
-                <button>selection</button>
-                <button>window</button>
-                <button>help</button>
+            <div id="menu-bar-options" class="dropdowns-open tight-container">
+                <button id="menu-bar-home">
+                    ❤︎
+                    <div class="dropdown-options">
+                        <a>option 1</a>
+                        <a>option 2</a>
+                        <a>option 3</a>
+                    </div>
+                </button>
+                <button id="menu-bar-apphome">
+                    finder
+                </button>
+                <button>
+                    file
+                </button>
+                <button>
+                    edit
+                </button>
+                <button>
+                    view
+                </button>
+                <button>
+                    selection
+                </button>
+                <button>
+                    window
+                </button>
+                <button>
+                    help
+                </button>
             </div>
             <div id="menu-bar-widgets" class="tight-container">
                 <button>★</button>
@@ -67,7 +88,7 @@
 
         <script src="js/iconsLoader.js"></script>
         <script src="js/realTimeClock.js"></script>
-        <script src="js/menubarFlyouts.js"></script>
+        <script src="js/menubarDropdowns.js"></script>
         <script src="js/dockZoomEffect.js"></script>
     </body>
 </html>

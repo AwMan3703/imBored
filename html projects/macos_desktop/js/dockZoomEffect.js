@@ -4,7 +4,6 @@ const min = Math.min;
 
 const minScale = document.getElementById("appicon-finder").offsetHeight;//.slice(0, -2);
 const maxScale = 400;
-console.log(` : ${minScale}`);
 
 let dockRect, inx, iny;
 
