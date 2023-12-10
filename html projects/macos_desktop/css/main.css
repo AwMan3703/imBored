@@ -33,8 +33,7 @@ body {
   grid-row: 1;
   color: var(--material-color-text-white);
   background-color: var(--menubar-color);
-  -webkit-user-select: none;
-          user-select: none;
+  user-select: none;
 }
 #menu-bar button {
   color: inherit;
@@ -98,12 +97,9 @@ body {
   overflow: visible;
 }
 #dock {
-  width: -webkit-fit-content;
   width: fit-content;
   min-width: 10%;
-  max-height: -webkit-min-content;
   max-height: min-content;
-  height: -webkit-fit-content;
   height: fit-content;
   padding-block: 8.5px;
   padding-inline: 5px;
@@ -121,8 +117,7 @@ body {
   background-image: url('../img/icons/app-default1.jpg');
   background-size: 101%;
   background-position: center;
-  -webkit-backdrop-filter: blur(150px);
-          backdrop-filter: blur(150px);
+  backdrop-filter: blur(150px);
   border: none;
   border-radius: 27%;
   transform-origin: 50% 100%;
@@ -141,13 +136,6 @@ body {
   aspect-ratio: 1;
   background-color: var(--menubar-color);
   border-radius: 50%;
-}
-.material,
-#menu-bar .dropdowns-open button:hover > .dropdown-options {
-  background-color: var(--material-color-background);
-  -webkit-backdrop-filter: blur(30px);
-          backdrop-filter: blur(30px);
-  box-shadow: 0 0.8px 0 0px var(--material-color-background) inset, 0 0 0 1px rgba(0, 0, 0, 0.7);
 }
 .border-radius {
   border-radius: var(--material-border-radius1);
