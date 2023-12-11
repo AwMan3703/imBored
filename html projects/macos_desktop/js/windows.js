@@ -2,26 +2,21 @@
 function makeDraggable(el) {
 	const handle = document.getElementById(el.id + '-handle');
 
-	let x = 0, y = 0;
+	let dX = 0, dY = 0;
 
-	const drag = (ev) => {
+	const onDrag = (ev) => {
+		if (ev.buttons==0) { document.removeEventListener('mousemove', onDrag); }
+		let mX = ev.clientX, mY = ev.clientY;
+		el.style.left = `${mX - dX + ev.movementX}px`;
+		el.style.top = `${mY - dY + ev.movementY}px`;
+	}
+
+	handle.addEventListener('mousedown', (ev) => {
 		let oGCS = window.getComputedStyle(el);
-		let oX = parseInt(oGCS.left.slice(0, -2));
-		let oY = parseInt(oGCS.top.slice(0, -2));
-		el.left = `${oX + ev.movementX}px`;
-		console.log(`${oX + ev.movementX}px`);
-		el.top = `${oY + ev.movementY}px`;
-		console.log(`${oY + ev.movementY}px`);
-	}
-
-	const dragEnd = (ev) => {
-		handle.removeEventListener('mousemove', drag)
-	}
-
-	handle.addEventListener('mousedown', () => {
-		handle.addEventListener('mousemove', drag);
+		dX = ev.clientX - parseInt(oGCS.left); //record the X delta between mouse and window's top-left corner
+		dY = ev.clientY - parseInt(oGCS.top); //record the Y delta between mouse and window's top-left corner
+		document.addEventListener('mousemove', onDrag);
 	});
-	document.addEventListener('mouseup', dragEnd);
 }
 
 let winId = 0;
@@ -33,25 +28,24 @@ const spawnWindow = (x, y, w, h, winSrc) => {
 
     winId += 1;
 
-    windowroot.id = 'window_' + winId;
+    windowroot.id = `window_${winId}`;
     windowroot.style.left = x + 'px';
     windowroot.style.top = y + 'px';
     windowroot.style.width = w + 'px';
     windowroot.style.height = h + 'px';
     windowroot.className = 'window';
 
-    windowbar.id = windowroot.id + '-handle';
+    windowbar.id = `${windowroot.id}-handle`;
     windowbar.className = 'window-bar';
 
     iframe.src = winSrc;
 
     windowroot.appendChild(windowbar);
-    //windowroot.appendChild(iframe);
+    windowroot.appendChild(iframe);
     document.getElementById('desktop').appendChild(windowroot);
     makeDraggable(windowroot);
 }
 
 
 //testing
-spawnWindow(50, 50, 200, 100, 'windows/testing.html');
-spawnWindow(150, 150, 200, 100, 'windows/testing.html');
+//spawnWindow(50, 50, 200, 100, 'windows/testing.html');

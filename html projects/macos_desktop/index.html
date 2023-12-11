@@ -11,7 +11,7 @@
     </head>
 
     <body>
-        <div id="menu-bar" class="wide-container">
+        <div id="menu-bar" class="stack-top wide-container">
             <div id="menu-bar-options" class="tight-container dropdowns-open">
                 <button id="menu-bar-home">
                     ❤︎
@@ -65,15 +65,111 @@
                 </button>
                 <button>
                     file
+                    <div class="dropdown-options">
+                        <div data-shortcut="⌘N">new finder window</div>
+                        <div data-shortcut="⇧⌘N">new folder</div>
+                        <div data-shortcut="^⌘N" class="disabled">new folder with selection</div>
+                        <div>new smart folder</div>
+                        <div data-shortcut="⌘T">new tab</div>
+                        <div data-shortcut="⌘O" class="disabled">open</div>
+                        <div class="disabled">open with
+                            <div class="dropdown-options">
+                                <div>myapp</div>
+                                <div>anotherapp</div>
+                            </div>
+                        </div>
+                        <div data-shortcut="⌘W" class="disabled">close window</div>
+                        <hr>
+                        <div data-shortcut="⌘I">get info</div>
+                        <div class="disabled">rename</div>
+                        <div class="disabled">compress</div>
+                        <div data-shortcut="⌘D" class="disabled">duplicate</div>
+                        <div data-shortcut="^⌘A" class="disabled">make alias</div>
+                        <div data-shortcut="⌘Y" class="disabled">quick look</div>
+                        <div data-shortcut="⌘P" class="disabled">print</div>
+                        <hr>
+                        <div class="disabled">share...</div>
+                        <hr>
+                        <div data-shortcut="⌘R" class="disabled">show original</div>
+                        <div data-shortcut="^⇧⌘T" class="disabled">add to dock</div>
+                        <hr>
+                        <div data-shortcut="⌘⌫" class="disabled">move to trash</div>
+                        <div data-shortcut="⌘E" class="disabled">eject</div>
+                        <hr>
+                        <div class="disabled">tags...</div>
+                        <hr>
+                        <div data-shortcut="⌘F">find</div>
+                    </div>
                 </button>
                 <button>
                     edit
+                    <div class="dropdown-options">
+                        <div data-shortcut="⌘Z" class="disabled">undo</div>
+                        <div data-shortcut="⇧⌘Z" class="disabled">redo</div>
+                        <hr>
+                        <div data-shortcut="⌘X" class="disabled">cut</div>
+                        <div data-shortcut="⌘C" class="disabled">copy</div>
+                        <div data-shortcut="⌘V" class="disabled">paste</div>
+                        <div data-shortcut="⌘A">select all</div>
+                        <hr>
+                        <div>show clipboard</div>
+                        <hr>
+                        <div data-shortcut="🎙️">start dictation</div>
+                        <div data-shortcut="🌍">emoji & symbols</div>
+                    </div>
                 </button>
                 <button>
                     view
+                    <div class="dropdown-options">
+                        <div data-shortcut="⌘1" class="disabled">as icons</div>
+                        <div data-shortcut="⌘2" class="disabled">as list</div>
+                        <div data-shortcut="⌘3" class="disabled">as columns</div>
+                        <div data-shortcut="⌘4" class="disabled">as gallery</div>
+                        <hr>
+                        <div data-shortcut="^⌘O">use stacks</div>
+                        <div>sort by
+                            <div class="dropdown-options">
+                                <div>name</div>
+                                <div>kind</div>
+                                <div>date</div>
+                                <div>size</div>
+                                <div>tags</div>
+                            </div>
+                        </div>
+                        <div>clean up</div>
+                        <div>clean up by
+                            <div class="dropdown-options">
+                                <div>name</div>
+                                <div>kind</div>
+                                <div>date</div>
+                                <div>size</div>
+                                <div>tags</div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div data-shortcut="^⌘S" class="disabled">hide sidebar</div>
+                        <div data-shortcut="⇧⌘P" class="disabled">hide preview</div>
+                        <hr>
+                        <div data-shortcut="⌥⌘T" class="disabled">hide toolbar</div>
+                        <div data-shortcut="⇧⌘ù" class="disabled">show all tabs</div>
+                        <div data-shortcut="⇧⌘T" class="disabled">hide tab bar</div>
+                        <div data-shortcut="⌥⌘P" class="disabled">hide path bar</div>
+                        <div data-shortcut="⌘'" class="disabled">hide status bar</div>
+                        <hr>
+                        <div class="disabled">customize toolbar...</div>
+                        <hr>
+                        <div data-shortcut="⌘J">show view options</div>
+                        <div class="disabled">show preview options</div>
+                        <hr>
+                        <div data-shortcut="🌎F" class="disabled">enter full screen</div>
+                    </div>
                 </button>
                 <button>
                     selection
+                    <div class="dropdown-options">
+                        <div data-shortcut="⌘ò" class="disabled">back</div>
+                        <div data-shortcut="⌘à" class="disabled">forward</div>
+                    </div>
                 </button>
                 <button>
                     window
@@ -95,7 +191,7 @@
         </div>
 
         <div id="dock-wrapper">
-            <div id="dock" class="material border-radius tight-container">
+            <div id="dock" class="stack-top material border-radius tight-container">
                 <div class="appicon-wrapper">
                     <button id="appicon-finder" data-icon="app-finder.png" class="load-icon open"></button>
                 </div>
