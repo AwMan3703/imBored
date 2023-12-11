@@ -26,6 +26,7 @@
     --material-transition-default: all .07s ease-out;
 
     --dock-height: 90px;
+    --dock-bgcolor: rgba(138, 138, 138, 0.7);
 }
 :root.darkmode {}
 
@@ -174,8 +175,12 @@ hr.vertical {
     &:extend(.material);
 
     position: absolute;
-    padding: 10%;
     background-color: red;
+}
+.window .window-bar {
+    width: 100%;
+    height: 20px;
+    background-color: white;
 }
 .window iframe {
     margin: 10px;
@@ -213,7 +218,7 @@ hr.vertical {
     justify-content: center;
     overflow: visible;
 
-
+    background-color: var(--dock-bgcolor);
 }
 #dock button {
     min-height: calc(var(--dock-height) - 40px);
@@ -239,7 +244,7 @@ hr.vertical {
     margin-bottom: -5px; /* Must be equal to height */
     height: 5px;
     aspect-ratio: 1;
-    background-color: var(--menubar-color);
+    background-color: black;
     border-radius: 50%;
 }
 
