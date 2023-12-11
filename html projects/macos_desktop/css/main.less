@@ -7,10 +7,12 @@
     --menubar-color: rgba(0, 0, 0, 0.5);
     --menubar-color-active: rgba(255, 255, 255, 0.1);
 
-    --material-color-background: rgba(255, 255, 255, 0.5);
+    --material-color-background: rgba(255, 255, 255, 0.6);
+    --material-color-background-secondary: rgba(110, 110, 110, 0.6);
+    --material-color-background-layer: rgba(110, 110, 110, 0.2);
 
-    --material-color-text-black: rgb(47, 47, 47, 0.9);
     --material-color-text-white: rgba(255, 255, 255, 0.9);
+    --material-color-text-black: rgb(47, 47, 47, 0.9);
 
     --material-color-separator: rgba(0, 0, 0, .5);
 
@@ -138,7 +140,7 @@ hr.vertical {
     padding: 3.5px;
     padding-inline-end: 24px;
 }
-#menu-bar .dropdowns-open button:hover .dropdown-options > div {
+#menu-bar .dropdown-options > div {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -146,24 +148,38 @@ hr.vertical {
     padding-block: 4px;
     padding-inline: 10px;
 }
-#menu-bar .dropdowns-open button:hover .dropdown-options hr {
+#menu-bar .dropdown-options hr {
     translate: 12px;
 }
-#menu-bar .dropdowns-open button:hover .dropdown-options div:not(.disabled):hover {
+#menu-bar .dropdown-options input[type="text"] {
+    width: 100%;
+    border: none;
+    padding-inline: 10px;
+    background-color: var(--material-color-background-layer);
+    border-radius: var(--material-border-radius4);
+}
+#menu-bar .dropdown-options input[type="text"]::placeholder {
+    color: var(--material-color-text-black);
+    opacity: 20%;
+}
+#menu-bar .dropdown-options div:not(.disabled):hover {
     color: var(--material-color-text-white);
     background-color: var(--color-accent);
 }
-#menu-bar button .dropdown-options div::after {
+#menu-bar .dropdown-options div::after {
     content: attr(data-shortcut);
 }
-#menu-bar button .dropdown-options div.disabled,
-#menu-bar button .dropdown-options div:not(.disabled):after {
+#menu-bar .dropdown-options div.disabled,
+#menu-bar .dropdown-options div:not(.disabled):after {
     opacity: 50%;
 }
-#menu-bar button .dropdown-options div:has(.dropdown-options):not(.disabled)::after {
+#menu-bar .dropdown-options div:has(.dropdown-options):not(.disabled)::after {
     content: "⟩";
     opacity: 100% !important;
 }
+
+
+
 
 
 
@@ -173,6 +189,8 @@ hr.vertical {
 .window {
     &:extend(.material);
 
+    width: fit-content;
+    height: fit-content;
     position: absolute;
     background-color: red;
     border-radius: var(--material-border-radius3);
@@ -186,7 +204,12 @@ hr.vertical {
 }
 .window iframe {
     border: none;
+    width: fit-content;
+    height: fit-content;
 }
+
+
+
 
 
 

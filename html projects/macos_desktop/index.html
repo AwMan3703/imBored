@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="css/compiled-css/main.css">
         <link rel="stylesheet" href="css/compiled-css/utility.css">
         <link rel="stylesheet" href="css/compiled-css/devtools.css">
+        <link rel="stylesheet" href="css/compiled-css/utility.css">
     </head>
 
     <body>
@@ -165,17 +166,66 @@
                     </div>
                 </button>
                 <button>
-                    selection
+                    go
                     <div class="dropdown-options">
                         <div data-shortcut="⌘ò" class="disabled">back</div>
                         <div data-shortcut="⌘à" class="disabled">forward</div>
+                        <div data-shortcut="⇧⌘▲">select startup disk on desktop</div>
+                        <hr>
+                        <div data-shortcut="⇧⌘F">recents</div>
+                        <div data-shortcut="⇧⌘O">documents</div>
+                        <div data-shortcut="⇧⌘D">desktop</div>
+                        <div data-shortcut="⌥⌘L">downloads</div>
+                        <div data-shortcut="⇧⌘H">home</div>
+                        <div data-shortcut="⇧⌘L">library</div>
+                        <div data-shortcut="⇧⌘C">computer</div>
+                        <div data-shortcut="⇧⌘R">airDrop</div>
+                        <div data-shortcut="⇧⌘K">network</div>
+                        <div data-shortcut="⇧⌘I">iCloud drive</div>
+                        <div data-shortcut="⇧⌘S">shared</div>
+                        <div data-shortcut="⇧⌘A">applications</div>
+                        <div data-shortcut="⇧⌘U">utilities</div>
+                        <hr>
+                        <div>recent folders
+                            <div class="dropdown-options">
+                                <div>desktop</div>
+                                <div>downloads</div>
+                                <div>myfiles</div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div data-shortcut="⇧⌘G">go to folder...</div>
+                        <div data-shortcut="⌘K">connect to server...</div>
                     </div>
                 </button>
                 <button>
                     window
+                    <div class="dropdown-options">
+                        <div data-shortcut="⌘M" class="disabled">minimize</div>
+                        <div class="disabled">zoom</div>
+                        <div class="disabled">move window to left side of screen</div>
+                        <div class="disabled">move window to right side of screen</div>
+                        <div class="disabled">replace tiled window</div>
+                        <hr>
+                        <div class="disabled">remove window from set</div>
+                        <div data-shortcut="⌘<">cycle through windows</div>
+                        <div class="disabled">show progress window</div>
+                        <hr>
+                        <div data-shortcut="^⇧⇥" class="disabled">show previous tab</div>
+                        <div data-shortcut="^⇥" class="disabled">show next tab</div>
+                        <div class="disabled">move tab to new window</div>
+                        <div class="disabled">merge all windows</div>
+                        <hr>
+                        <div>bring all to front</div>
+                    </div>
                 </button>
                 <button>
                     help
+                    <div class="dropdown-options">
+                        <input type="text" name="help-searchbar" id="menubar-help-searchbar" placeholder="Search">
+                        <div>tips for your mac</div>
+                        <div data-shortcut="⌘?">macos help</div>
+                    </div>
                 </button>
             </div>
             <div id="menu-bar-widgets" class="tight-container">

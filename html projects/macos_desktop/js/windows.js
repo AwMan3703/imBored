@@ -24,6 +24,7 @@ let winId = 0;
 const spawnWindow = (x, y, w, h, winSrc) => {
     const windowroot = document.createElement('div');
     const windowbar = document.createElement('div');
+    const closeBtn = document.createElement('div');
     const iframe = document.createElement('iframe');
 
     winId += 1;
@@ -38,8 +39,11 @@ const spawnWindow = (x, y, w, h, winSrc) => {
     windowbar.id = `${windowroot.id}-handle`;
     windowbar.className = 'window-bar';
 
+    closeBtn.style.backgroundColor = 'red';
+
     iframe.src = winSrc;
 
+    windowbar.appendChild(closeBtn);
     windowroot.appendChild(windowbar);
     windowroot.appendChild(iframe);
     document.getElementById('desktop').appendChild(windowroot);
@@ -48,4 +52,4 @@ const spawnWindow = (x, y, w, h, winSrc) => {
 
 
 //testing
-//spawnWindow(50, 50, 200, 100, 'windows/testing.html');
+spawnWindow(50, 50, 1000, 500, 'windows/testing.html');
