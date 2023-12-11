@@ -5,23 +5,63 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
 
-        <link rel="stylesheet" href="css/main.css">
-        <link rel="stylesheet" href="css/devtools.css">
+        <link rel="stylesheet" href="css/compiled-css/main.css">
+        <link rel="stylesheet" href="css/compiled-css/utility.css">
+        <link rel="stylesheet" href="css/compiled-css/devtools.css">
     </head>
 
     <body>
         <div id="menu-bar" class="wide-container">
-            <div id="menu-bar-options" class="dropdowns-open tight-container">
+            <div id="menu-bar-options" class="tight-container dropdowns-open">
                 <button id="menu-bar-home">
                     ❤︎
                     <div class="dropdown-options">
-                        <a>option 1</a>
-                        <a>option 2</a>
-                        <a>option 3</a>
+                        <div>about this mac</div>
+                        <hr>
+                        <div>system settings...</div>
+                        <div>app store...</div>
+                        <hr>
+                        <div>recent items
+                            <div class="dropdown-options">
+                                <div>testing.png</div>
+                                <div>lorem.app</div>
+                                <div>placeholder</div>
+                                <div>mydomain.com</div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div data-shortcut="⌥⌘⎋">force quit...</div>
+                        <hr>
+                        <div>sleep</div>
+                        <div>restart...</div>
+                        <div>shut down...</div>
+                        <hr>
+                        <div data-shortcut="^⌘Q">lock screen</div>
+                        <div data-shortcut="⇧⌘Q" class="disabled">log out guest...</div>
                     </div>
                 </button>
                 <button id="menu-bar-apphome">
                     finder
+                    <div class="dropdown-options">
+                        <div>about finder</div>
+                        <hr>
+                        <div data-shortcut="⌘,">settings...</div>
+                        <hr>
+                        <div data-shortcut="⇧⌘⌫">empty trash...</div>
+                        <hr>
+                        <div>services
+                            <div class="dropdown-options">
+                                <div>monitor</div>
+                                <div>console</div>
+                                <div>open logs</div>
+                                <div>record</div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div data-shortcut="⌘H">hide finder</div>
+                        <div data-shortcut="⌥⌘H">hide others</div>
+                        <div class="disabled">show all</div>
+                    </div>
                 </button>
                 <button>
                     file
@@ -80,8 +120,9 @@
                 <div class="appicon-wrapper">
                     <button data-icon="" class="load-icon"></button>
                 </div>
+                <hr class="vertical">
                 <div class="appicon-wrapper">
-                    <button data-icon="" class="load-icon"></button>
+                    <button id="appicon-trash" data-icon="app-trash.png" class="load-icon"></button>
                 </div>
             </div>
         </div>
@@ -90,5 +131,6 @@
         <script src="js/realTimeClock.js"></script>
         <script src="js/menubarDropdowns.js"></script>
         <script src="js/dockZoomEffect.js"></script>
+        <script src="js/windows.js"></script>
     </body>
 </html>

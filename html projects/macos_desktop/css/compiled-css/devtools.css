@@ -1,0 +1,9 @@
+#stdout {
+  color: aquamarine;
+  font-family: 'Courier New', Courier, monospace;
+  opacity: 75%;
+}
+#stdout::before {
+  content: "stdout> ";
+  color: aquamarine;
+}
