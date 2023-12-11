@@ -121,7 +121,8 @@ hr.vertical {
 #menu-bar button .dropdown-options {
     display: none;
 }
-#menu-bar .dropdowns-open button:hover > .dropdown-options {
+#menu-bar button:focus-within > .dropdown-options,
+#menu-bar .dropdown-options > * {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
@@ -162,7 +163,7 @@ hr.vertical {
     color: var(--material-color-text-black);
     opacity: 20%;
 }
-#menu-bar .dropdown-options div:not(.disabled):hover {
+#menu-bar .dropdown-options div:not(.disabled):focus-within {
     color: var(--material-color-text-white);
     background-color: var(--color-accent);
 }
@@ -195,6 +196,7 @@ hr.vertical {
     box-shadow: 0 10px 20px 0px rgba(0, 0, 0, 50%);
     overflow: hidden;
     transition: top 0s, left 0s, opacity .3s;
+    user-select: none;
 }
 .window .window-bar {
     display: flex;
