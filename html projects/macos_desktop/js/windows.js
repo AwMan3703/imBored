@@ -24,22 +24,29 @@ let winId = 0;
 const spawnWindow = (x, y, w, h, winSrc) => {
     const windowroot = document.createElement('div');
     const windowbar = document.createElement('div');
-    const closeBtn = document.createElement('div');
+    const closeBtn = document.createElement('button');
     const iframe = document.createElement('iframe');
 
     winId += 1;
 
     windowroot.id = `window_${winId}`;
+    windowroot.className = 'window';
     windowroot.style.left = x + 'px';
     windowroot.style.top = y + 'px';
     windowroot.style.width = w + 'px';
     windowroot.style.height = h + 'px';
-    windowroot.className = 'window';
 
     windowbar.id = `${windowroot.id}-handle`;
     windowbar.className = 'window-bar';
 
+    closeBtn.classList = 'closewindow-button round';
     closeBtn.style.backgroundColor = 'red';
+    closeBtn.addEventListener('click', () => {
+        windowroot.style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById(windowroot.id).remove();
+        }, 500);
+    });
 
     iframe.src = winSrc;
 
@@ -53,3 +60,5 @@ const spawnWindow = (x, y, w, h, winSrc) => {
 
 //testing
 spawnWindow(50, 50, 1000, 500, 'windows/testing.html');
+spawnWindow(150, 70, 700, 300, 'windows/testing.html');
+spawnWindow(70, 150, 300, 500, 'windows/testing.html');
