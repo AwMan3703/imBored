@@ -241,6 +241,6 @@ hr.vertical {
   /* Must be equal to height */
   height: 5px;
   aspect-ratio: 1;
-  background-color: black;
+  background-color: var(--material-color-text-black);
   border-radius: 50%;
 }
