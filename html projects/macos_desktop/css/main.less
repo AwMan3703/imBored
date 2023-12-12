@@ -121,7 +121,7 @@ hr.vertical {
 #menu-bar button .dropdown-options {
     display: none;
 }
-#menu-bar button:focus-within > .dropdown-options,
+#menu-bar .dropdowns-open button:hover > .dropdown-options,
 #menu-bar .dropdown-options > * {
     display: flex;
     align-items: flex-start;
@@ -163,7 +163,7 @@ hr.vertical {
     color: var(--material-color-text-black);
     opacity: 20%;
 }
-#menu-bar .dropdown-options div:not(.disabled):focus-within {
+#menu-bar .dropdown-options div:not(.disabled):hover {
     color: var(--material-color-text-white);
     background-color: var(--color-accent);
 }
@@ -195,7 +195,7 @@ hr.vertical {
     border-radius: var(--material-border-radius3);
     box-shadow: 0 10px 20px 0px rgba(0, 0, 0, 50%);
     overflow: hidden;
-    transition: top 0s, left 0s, opacity .3s;
+    transition: top 0s, left 0s, opacity .05s;
     user-select: none;
 }
 .window .window-bar {
@@ -213,13 +213,13 @@ hr.vertical {
     height: 100%;
 }
 .closewindow-button {
-    transition: 0s;
-}
-.closewindow-button:hover {
-    background-image: url('../../img/icons/ui/x.png');
+    transition: background-position 0s;
     background-size: 50%;
     background-position: 50% 50%;
     background-repeat: no-repeat;
+}
+.closewindow-button:hover {
+    background-image: url('../../img/icons/ui/x.png');
 }
 .closewindow-button:active {
     filter: brightness(50%);

@@ -45,7 +45,7 @@ const spawnWindow = (x, y, w, h, winSrc) => {
         windowroot.style.opacity = '0';
         setTimeout(() => {
             document.getElementById(windowroot.id).remove();
-        }, 500);
+        }, 200);
     });
 
     iframe.src = winSrc;
