@@ -25,6 +25,8 @@ const spawnWindow = (x, y, w, h, winSrc) => {
     const windowroot = document.createElement('div');
     const windowbar = document.createElement('div');
     const closeBtn = document.createElement('button');
+    const minimizeBtn = document.createElement('button');
+    const fullscreenBtn = document.createElement('button');
     const iframe = document.createElement('iframe');
 
     winId += 1;
@@ -48,17 +50,19 @@ const spawnWindow = (x, y, w, h, winSrc) => {
         }, 200);
     });
 
+    minimizeBtn.classList = 'round';
+    minimizeBtn.style.backgroundColor = '#ffc800';
+
+    fullscreenBtn.classList = 'round';
+    fullscreenBtn.style.backgroundColor = '#00b000';
+
     iframe.src = winSrc;
 
     windowbar.appendChild(closeBtn);
+    windowbar.appendChild(minimizeBtn);
+    windowbar.appendChild(fullscreenBtn);
     windowroot.appendChild(windowbar);
     windowroot.appendChild(iframe);
     document.getElementById('desktop').appendChild(windowroot);
     makeDraggable(windowroot);
 }
-
-
-//testing
-spawnWindow(50, 50, 1000, 500, 'windows/testing.html');
-spawnWindow(150, 70, 700, 300, 'windows/testing.html');
-spawnWindow(70, 150, 300, 500, 'windows/testing.html');

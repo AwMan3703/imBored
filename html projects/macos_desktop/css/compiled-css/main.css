@@ -20,8 +20,7 @@
   --dock-bgcolor: rgba(138, 138, 138, 0.1);
 }
 .material,
-#menu-bar .dropdowns-open button:hover > .dropdown-options,
-#menu-bar .dropdown-options > * {
+#menu-bar .dropdowns-open button:hover > .dropdown-options {
   background-color: var(--material-color-background);
   -webkit-backdrop-filter: blur(30px);
   backdrop-filter: blur(100px);
@@ -95,8 +94,7 @@ hr.vertical {
 #menu-bar button .dropdown-options {
   display: none;
 }
-#menu-bar .dropdowns-open button:hover > .dropdown-options,
-#menu-bar .dropdown-options > * {
+#menu-bar .dropdowns-open button:hover > .dropdown-options {
   display: flex;
   align-items: flex-start;
   flex-direction: column;
@@ -165,6 +163,7 @@ hr.vertical {
 .window .window-bar {
   display: flex;
   align-items: center;
+  gap: 5px;
   width: 100%;
   height: 20px;
   padding-inline: 8px;
