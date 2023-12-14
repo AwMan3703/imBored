@@ -1,0 +1,14 @@
+
+@keyframes progress-bar {
+    50% {
+        background-color: rgb(255, 208, 0);
+    }
+    99% {
+        border-radius: 999px 999px 999px 0px;
+    }
+    100% {
+        width: 100dvw;
+        border-radius: 0px;
+        background-color: green;
+    }
+}
