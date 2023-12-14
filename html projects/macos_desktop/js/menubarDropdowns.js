@@ -1,11 +1,18 @@
 
-document.getElementById('menu-bar-options').addEventListener('click', (_a, _b) => {
-    const el = document.getElementById('menu-bar-options');
+const el = document.getElementById('menu-bar-options');
+const toggle_class = 'dropdowns-open';
 
-    if (el.classList.contains('dropdowns-open')) {
-        el.classList.remove('dropdowns-open');
+el.addEventListener('click', () => {
+
+    if (el.classList.contains(toggle_class)) {
+        el.classList.remove(toggle_class);
 
     } else {
-        el.classList.add('dropdowns-open');
+        el.classList.add(toggle_class);
+    }
+});
+document.addEventListener('click', () => {
+    if (document.activeElement != el) { // if dropdown options are not focused
+        el.classList.remove(toggle_class);
     }
 });

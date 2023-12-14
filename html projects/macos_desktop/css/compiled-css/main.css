@@ -165,6 +165,7 @@ hr.vertical {
 .window .window-bar {
   display: flex;
   align-items: center;
+  gap: 5px;
   width: 100%;
   height: 20px;
   padding-inline: 8px;
@@ -177,13 +178,13 @@ hr.vertical {
   height: 100%;
 }
 .closewindow-button {
-  transition: 0s;
-}
-.closewindow-button:hover {
-  background-image: url('../../img/icons/ui/x.png');
+  transition: background-position 0s;
   background-size: 50%;
   background-position: 50% 50%;
   background-repeat: no-repeat;
+}
+.closewindow-button:hover {
+  background-image: url('../../img/icons/ui/x.png');
 }
 .closewindow-button:active {
   filter: brightness(50%);
@@ -242,6 +243,6 @@ hr.vertical {
   /* Must be equal to height */
   height: 5px;
   aspect-ratio: 1;
-  background-color: black;
+  background-color: var(--material-color-text-black);
   border-radius: 50%;
 }
