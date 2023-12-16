@@ -17,7 +17,7 @@
 body {
   margin: 0;
   display: grid;
-  grid-template-rows: repeat(10, 100vh);
+  grid-template-rows: repeat(20, 100vh);
   grid-template-columns: 100dvw;
 }
 section {
@@ -68,6 +68,7 @@ p {
   width: 0;
   opacity: 0%;
   border-radius: 0px 999px 999px 0px;
+  z-index: 999;
   animation: progress-bar;
 }
 #section-hero {
@@ -75,20 +76,22 @@ p {
 }
 #section-1 {
   grid-row: 2;
+  perspective: 10em;
 }
 #zoom-box {
   width: 50%;
   height: 50%;
   background-color: var(--color-palette-black);
-  animation: zoom-to-max;
+  transform: rotateX(45deg);
+  animation: lift-box;
   animation-fill-mode: both;
-  animation-range: entry 10% contain 50%;
+  animation-range: view contain;
 }
 #section-2 {
   grid-row: 3;
   background-color: var(--color-palette-black);
 }
 #section-3 {
-  grid-row: 4 / 7;
-  background-image: linear-gradient(180deg, var(--color-palette-black), var(--color-palette-2), var(--color-palette-1), transparent);
+  grid-row: 4 / span 6;
+  background-image: linear-gradient(180deg, var(--color-palette-black), var(--color-palette-2) 80%, var(--color-palette-1), transparent);
 }
