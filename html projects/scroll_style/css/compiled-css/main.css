@@ -39,7 +39,7 @@ h4,
 h5,
 h6,
 p {
-  margin: 0;
+  margin-block: 0;
   user-select: none;
 }
 h1 {
@@ -65,7 +65,8 @@ p {
 #progress-bar {
   position: fixed;
   height: 1vh;
-  width: 0;
+  width: 100vw;
+  translate: -100vw;
   opacity: 0%;
   border-radius: 0px 999px 999px 0px;
   z-index: 999;
@@ -73,6 +74,7 @@ p {
 }
 #section-hero {
   grid-row: 1;
+  justify-content: center;
 }
 #section-1 {
   grid-row: 2;
@@ -82,10 +84,11 @@ p {
   width: 50%;
   height: 50%;
   background-color: var(--color-palette-black);
+  background: element('#masked-title');
   transform: rotateX(45deg);
   animation: lift-box;
   animation-fill-mode: both;
-  animation-range: view contain;
+  animation-range: entry 0% contain -50%;
 }
 #section-2 {
   grid-row: 3;
@@ -93,5 +96,5 @@ p {
 }
 #section-3 {
   grid-row: 4 / span 6;
-  background-image: linear-gradient(180deg, var(--color-palette-black), var(--color-palette-2) 80%, var(--color-palette-1), transparent);
+  background-image: linear-gradient(180deg, var(--color-palette-black), var(--color-palette-2) 60%, var(--color-palette-1), transparent);
 }

@@ -1,0 +1,54 @@
+
+:root {
+    --palette-bg1: rgba(255, 205, 213, .5);
+    --palette-bg2: rgba(255, 180, 192, .5);
+    --palette-1: rgb(255, 120, 120);
+    --palette-2: rgb(234, 0, 0);
+    --palette-3: rgb(114, 0, 0);
+}
+
+*:not(html, body) {
+    margin: 20px;
+}
+
+div {
+    margin: 20px;
+    border-radius: 10px;
+    border-width: 4px;
+}
+
+body {
+    height: 800dvh;
+    margin: 0;
+    background-color: var(--palette-bg1);
+    background-image: linear-gradient(180deg, var(--palette-bg1), var(--palette-bg2));
+}
+
+#root-container {
+    height: calc(100% - 30px);
+    border-style: dotted;
+    border-color: red;
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+#sticky-container {
+    height: 500dvh;
+    margin-block-start: 100dvh;
+    border-style: dashed;
+    border-color: green;
+    background-color: rgba(0, 128, 0, 0.2);
+}
+
+#sticky-element {
+    /* the star of the show */
+    position: sticky;
+
+    /* top/bottom/left/right define where the sticking happens */
+    top: calc(50% - 10dvh);
+
+    height: 20dvh;
+    color: rgb(134, 87, 0);
+    border-style: solid;
+    border-color: rgb(203, 132, 0);
+    background-color: orange;
+}

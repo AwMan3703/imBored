@@ -15,7 +15,7 @@
         background-color: var(--color-palette-4);
         border-radius: 0px;
         opacity: 100%;
-        width: 100dvw;
+        translate: 0px;
     }
 }
 
