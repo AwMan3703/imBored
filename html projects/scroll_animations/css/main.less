@@ -115,16 +115,18 @@ p {
 	color: var(--color-palette-white);
 	font-size: 7vw;
 	font-weight: bolder;
+	user-select: none;
 
 	transform: none;
 	animation: sticky-element-rotate;
+	animation-timing-function: ease;
 	&:extend(.scroll-animation);
 }
 
 .slidein {
 	animation: reset-translate;
 	animation-fill-mode: forwards;
-	animation-iteration-count: 1;
+	animation-timing-function: ease;
 	&:extend(.view-animation);
 	animation-range: entry 0% contain 35%;
 }

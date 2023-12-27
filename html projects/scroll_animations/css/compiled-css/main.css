@@ -110,13 +110,15 @@ p {
   color: var(--color-palette-white);
   font-size: 7vw;
   font-weight: bolder;
+  user-select: none;
   transform: none;
   animation: sticky-element-rotate;
+  animation-timing-function: ease;
 }
 .slidein {
   animation: reset-translate;
   animation-fill-mode: forwards;
-  animation-iteration-count: 1;
+  animation-timing-function: ease;
   animation-range: entry 0% contain 35%;
 }
 .slidein.left {
