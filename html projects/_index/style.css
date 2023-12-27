@@ -4,6 +4,10 @@ body {
     display: flex;
 }
 
+iframe {
+    border: none;
+}
+
 projectdata {
     display: none;
 }

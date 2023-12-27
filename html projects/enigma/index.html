@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Enigma.js encryption demo</title>
+
+        <link rel="stylesheet" href="compiled-css/main.css">
+    </head>
+
+    <body>
+        <section id="top">
+            <header id="header">
+                <h1>Enigma.js demo</h1>
+            </header>
+
+            <div id="explaination">
+                <p>
+                    Enigma.js is a script that decyphers a page with a given key, so that only selected clients can see protected content.
+                </p>
+                <hr>
+                <h3>How to use:</h3>
+            </div>
+        </section>
+
+        <section id="demo-1">
+            <enigmajs-decrypt keysrc="php-parameter" keyname="first-paragraph">
+                hello wordl
+            </enigmajs-decrypt>
+        </section>
+
+
+        <script src="enigma.js"></script>
+    </body>
+</html>
