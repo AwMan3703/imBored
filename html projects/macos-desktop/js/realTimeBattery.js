@@ -6,8 +6,7 @@ function updateBatteries() {
     }
 
     const batteries = document.getElementsByClassName('real-time-battery');
-    const batteryStr = batteryPc + '% 🀰';
-    console.log(batteryPc+'% 🀰')
+    const batteryStr = batteryPc + '% 🀰›';
 
     for (let i = 0; i < batteries.length; i++) {
         const b = batteries[i];
