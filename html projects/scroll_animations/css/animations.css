@@ -26,3 +26,15 @@
         transform: rotateX(0deg);
     }
 }
+
+@keyframes sticky-element-rotate {
+    to {
+        transform: rotateX(-360deg);
+    }
+}
+
+@keyframes reset-translate {
+    to {
+        translate: none;
+    }
+}
