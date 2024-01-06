@@ -19,13 +19,13 @@ How to RMOD
      <version> = version number
 
 3. Get the modules from the server in your program
-    > copy RMOD_client.lua
+    > copy RMOD_client.lua on your local machine
     > require() it in your code
     > call RMOD_client.get("<hostname>", "<module>")
       to get your module from the server.
       An additional "<version>" parameter can be
       be used to specify the version you want to
-      get - if it's not provided, it will get the
+      download - if it's not provided, it will get the
       latest one.
 
 
