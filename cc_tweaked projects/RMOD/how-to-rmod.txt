@@ -14,9 +14,9 @@ How to RMOD
        rmod push -p <path> -m <name> -v <version>
       - remove a version:
        rmod remove -m <name> -v <version>
-         <path> = path to the module code
-         <name> = name of the module
-         <version> = version number
+     <path> = path to the module code
+     <name> = name of the module
+     <version> = version number
 
 3. Get the modules from the server in your program
     > copy RMOD_client.lua
