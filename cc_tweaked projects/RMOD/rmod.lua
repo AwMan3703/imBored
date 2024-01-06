@@ -7,8 +7,17 @@ local module_path = fs.combine(RMOD_path, "%s/%d.lua")
 local metadata_path = fs.combine(RMOD_path, "%s/meta.txt")
 
 --Output utility
+local function colored_print(color, ...)
+    local oldColor = term.getTextColor()
+    term.setTextColor(color)
+    print(...)
+    term.setTextColor(oldColor)
+end
 local function log(str)
-    print(("[RMOD] %s"):format(str))
+    colored_print(colors.gray, ("[RMOD] %s"):format(str))
+end
+local function warn(str)
+    colored_print(colors.lightGray, ("[RMOD] %s"):format(str))
 end
 
 --Utility
@@ -42,13 +51,12 @@ local function getLatestVersion(module)
         local n = tonumber(removeFileExtension(f))
         if n and n > highest then highest = n end
     end
-    log(("latest %s version is now %d"):format(module, highest))
     return highest
 end
 
 local function setMeta(module, meta)
     local path = metadata_path:format(module)
-
+    
     local fh = fs.open(path, "w")
     fh.write(textutils.serialize(meta))
     fh.close()
@@ -56,23 +64,25 @@ end
 
 local function getMeta(module)
     local path = metadata_path:format(module)
-
+    
     local fh = fs.open(path, "r")
     local meta = textutils.unserialize(fh.readAll())
     fh.close()
-
+    
     return meta
 end
 
 local function updateMeta(module)
     local path = metadata_path:format(module)
-
+    
     if not fs.exists(path) then setMeta(module, { latest_version = -1 }) end
-
+    
     local fh = fs.open(path, "w")
-    fh.write(textutils.serialize({
+    local meta = {
         latest_version = getLatestVersion(module)
-    }))
+    }
+    fh.write(textutils.serialize(meta))
+    log(("latest %s version is now %d"):format(module, meta.latest_version))
     fh.close()
 end
 
@@ -84,13 +94,15 @@ local function shell_command(argList)
         --Save "dev/testing.lua" as version 1.0 of mymodule:
         --rmod push -p dev/testing.lua -m mymodule -v 1.0
         ["push"] = function()
-            fs.copy(args["p"][1], module_path:format(args["m"][1], args["v"][1]));
+            fs.copy(args["p"][1], module_path:format(args["m"][1], args["v"][1]))
+            log(("%s pushed as version %d of %s"):format(args["p"][1], args["v"][1], args["m"][1]))
             updateMeta(args["m"][1])
         end,
         --Delete version 0.3 of somemodule
         --rmod delete -m mymodule -v 0.3
         ["delete"] = function()
             fs.delete(module_path:format(args["m"][1], tonumber(args["v"][1])))
+            log(("version %d of %s deleted"):format(args["v"][1], args["m"][1]))
             updateMeta(args["m"][1])
         end
     }
