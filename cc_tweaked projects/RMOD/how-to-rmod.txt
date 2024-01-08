@@ -1,0 +1,33 @@
+How to RMOD
+
+1. Create a server
+    > copy RMOD_server.lua on your server
+    > require() it in your server code
+    > call RMOD_server.setup("<your-hostname>")
+    > then call RMOD_server.start() when you want
+      to start the server
+
+2. Use the command line tool to manage the modules
+    > copy rmod.lua on your server
+    > use it to add or remove module versions
+      - add a new version:
+       rmod push -p <path> -m <name> -v <version>
+      - remove a version:
+       rmod remove -m <name> -v <version>
+     <path> = path to the module code
+     <name> = name of the module
+     <version> = version number
+
+3. Get the modules from the server in your program
+    > copy RMOD_client.lua on your local machine
+    > require() it in your code
+    > call RMOD_client.get("<hostname>", "<module>")
+      to get your module from the server.
+      An additional "<version>" parameter can be
+      be used to specify the version you want to
+      download - if it's not provided, it will get the
+      latest one.
+
+
+
+
