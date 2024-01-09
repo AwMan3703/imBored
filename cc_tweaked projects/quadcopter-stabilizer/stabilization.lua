@@ -9,10 +9,10 @@
 -- the signal for thruster_position will be outputted on computer_side
 -- can be any of the following: "top", "bottom", "front", "back", "left", "right"
 local thruster_connections = {
-    front_left = "fl",
-    front_right = "fr",
-    back_left = "bl",
-    back_right = "br"
+    front_left = "front",
+    front_right = "right",
+    back_left = "left",
+    back_right = "back"
 }
 
 local shipReader = peripheral.find("ship_reader")
@@ -106,6 +106,7 @@ end
 local function get_mapped_correction(axis, error)
     local out = {}
 	local correction = get_correction_signal(error)
+    correction = math.abs(correction) --uhm sir redstone signals must be integers ☝️🤓
 
 	-- Convert to output shown in comment --
     --get the affecting thrusters
@@ -127,7 +128,17 @@ local function sum_mapped_corrections(...)
         thruster_connections.back_left,
         thruster_connections.back_right
     }
+
+    for i=1, #arg do
+        print(i)
+    end
+
     return out
+end
+
+-- basically just set engines to the corrected power level
+local function apply_corrections(summed_corrections)
+    
 end
 
 
@@ -140,5 +151,6 @@ local function main()
             get_mapped_correction(axes.pitch, -42)
         )
     ))
+    sum_mapped_corrections("cock", "blass")
 
 end main()
