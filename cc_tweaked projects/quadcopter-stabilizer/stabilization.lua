@@ -17,7 +17,8 @@ local thruster_connections = {
 
 local shipReader = peripheral.find("ship_reader")
 
--- the position you want to correct to
+-- the target range of rotation you want to correct to
+-- TODO: ACTUALLY IMPLEMENT IT AS A RANGE
 local target_position = {
 	roll = 0,
 	pitch = 0
@@ -67,6 +68,12 @@ local function get_deg_rotation()
     local pitch = math.floor(math.deg(rotation.pitch)) % 360
     local roll = math.floor(math.deg(rotation.yaw)) % 360 -- YAW AND ROLL ARE INVERTED!!!!
     local yaw = math.floor(math.deg(rotation.roll)) % 360 -- because of a bug i think??
+
+    return {
+        roll = math.abs(roll-180)-180,
+        pitch = math.abs(pitch-180)-180,
+        yaw = yaw,
+    }
 end
 
 -- for any given axis, figure out which thrusters affect it
@@ -112,12 +119,26 @@ local function get_mapped_correction(axis, error)
     return out
 end
 
+-- combine multiple get_mapped_correction() outputs
+local function sum_mapped_corrections(...)
+    local out = {
+        thruster_connections.front_left,
+        thruster_connections.front_right,
+        thruster_connections.back_left,
+        thruster_connections.back_right
+    }
+    return out
+end
+
 
 
 local function main()
 
     print(textutils.serialize(
-        get_mapped_correction(axes.roll, -67)
+        sum_mapped_corrections(
+            get_mapped_correction(axes.roll, -67),
+            get_mapped_correction(axes.pitch, -42)
+        )
     ))
 
 end main()
