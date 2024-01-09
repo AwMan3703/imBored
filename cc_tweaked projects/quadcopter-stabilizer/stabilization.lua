@@ -7,25 +7,15 @@
 -- set the connections here
 -- schema: [thruster_position] = "[computer_side]"
 -- the signal for thruster_position will be outputted on computer_side
--- you may output on any side (top, bottom, front, back, left, right)
+-- can be any of the following: "top", "bottom", "front", "back", "left", "right"
 local thruster_connections = {
-    front_left = "front",
-    front_right = "right",
-    back_left = "left",
-    back_right = "back"
+    front_left = "fl",
+    front_right = "fr",
+    back_left = "bl",
+    back_right = "br"
 }
 
--- whatever you need to do to get roll value
-local function get_roll()
-    local roll = 0
-    return roll
-end
-
--- whatever you need to do to get pitch value
-local function get_pitch()
-    local pitch = 0
-    return pitch
-end
+local shipReader = peripheral.find("ship_reader")
 
 -- the position you want to correct to
 local target_position = {
@@ -42,13 +32,25 @@ local max_correction_threshold = {
 
 -- CONSTANTS
 
+local signal_range_max = 30 --output signal range (0 to X)
+
 local axes = {
     roll = "AXES_ROLL",
     pitch = "AXES_PITCH",
     yaw = "AXES_YAW",
 }
 
-local signal_range_max = 30 --output signal range (0 to X)
+--which thrusters affect which axes
+local axes_thruster_mapping = {
+    [axes.pitch] = {
+        positive = { thruster_connections.front_left, thruster_connections.front_right },
+        negative = { thruster_connections.back_left, thruster_connections.back_right }
+    },
+    [axes.roll] = {
+        positive = { thruster_connections.front_right, thruster_connections.back_right },
+        negative = { thruster_connections.front_left, thruster_connections.back_left }
+    }
+}
 
 
 -- UTILITY
@@ -59,10 +61,17 @@ local function normalize(value, min, max) return (value - min) / (max - min) end
 
 -- SCRIPT
 
+-- get the current ship rotation data
+local function get_deg_rotation()
+    local rotation = shipReader.getRotation() 
+    local pitch = math.floor(math.deg(rotation.pitch)) % 360
+    local roll = math.floor(math.deg(rotation.yaw)) % 360 -- YAW AND ROLL ARE INVERTED!!!!
+    local yaw = math.floor(math.deg(rotation.roll)) % 360 -- because of a bug i think??
+end
+
 -- for any given axis, figure out which thrusters affect it
 local function get_affecting_thrusters(axis)
-    local thrusters = {}
-    
+    return axes_thruster_mapping[axis]
 end
 
 -- find how much signal you need to correct the tilt
@@ -83,15 +92,32 @@ end
 --		in: roll, -35
 --		out: {
 --			{thruster_connections.front_left, -3},
---			{thruster_connections.front_right, +9},
+--			{thruster_connections.front_right, +3},
 --			{thruster_connections.back_left, -3},
---			{thruster_connections.back_right, +9}
+--			{thruster_connections.back_right, +3}   --correction total: 6, tilting left
 --		}
 local function get_mapped_correction(axis, error)
+    local out = {}
 	local correction = get_correction_signal(error)
-	--convert to output shown in comment
+
+	-- Convert to output shown in comment --
+    --get the affecting thrusters
+    local thrusters = get_affecting_thrusters(axis)
+    --for each of them:
+    for i=1, #thrusters.positive do
+        table.insert(out, {thrusters.positive[i], correction}) end --apply correction
+    for i=1, #thrusters.negative do
+        table.insert(out, {thrusters.negative[i], 0 - correction}) end --apply negative correction
+
+    return out
 end
 
-print(get_mapped_correction(axes.pitch, -67))
 
 
+local function main()
+
+    print(textutils.serialize(
+        get_mapped_correction(axes.roll, -67)
+    ))
+
+end main()
