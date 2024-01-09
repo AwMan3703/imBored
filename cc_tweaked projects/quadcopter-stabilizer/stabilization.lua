@@ -59,6 +59,12 @@ local function normalize(value, min, max) return (value - min) / (max - min) end
 
 -- SCRIPT
 
+-- for any given axis, figure out which thrusters affect it
+local function get_affecting_thrusters(axis)
+    local thrusters = {}
+    
+end
+
 -- find how much signal you need to correct the tilt
 local function get_correction_signal(error)
 	if error == 0 then return {}, 0 end -- skip useless computing
@@ -68,12 +74,12 @@ local function get_correction_signal(error)
 	return correction
 end
 
---in: axis, error; out: output_signals
+-- in: axis, error; out: output_signals
 --	axis: the axis to map the correction on
 --	error: how much the tilt to correct is
 --	output_signals: data on how to throttle the thrusters to stabilize
 --	delta: the correction signal to output (in redtone intensity)
---e.g.
+-- e.g.
 --		in: roll, -35
 --		out: {
 --			{thruster_connections.front_left, -3},
