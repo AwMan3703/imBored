@@ -36,7 +36,7 @@ local thruster_connections = {
 local shipReader = peripheral.find("ship_reader")
 
 -- wether to output details about the process
-local verbose_output = false
+local verbose_output = true
 
 -- the target range of rotation you want to correct to, 0 being perfectly vertical
 local target_rotation = {
@@ -67,11 +67,19 @@ local axes_thruster_mapping = {
     }
 }
 
+-- log levels for stdout()
+local log_levels = {
+    info = "LOG_INFO",
+    warn = "LOG_WARN",
+    error = "LOG_ERROR",
+    fatal = "LOG_FATAL"
+}
+
 
 -- UTILITY FUNCTIONS
 
 -- output process information
-local function stdout(text) if verbose_output then print(text) end end
+local function stdout(text, level) if verbose_output or level == log_levels.fatal then print("[STABILIZER.lua/"..level or log_levels.info.."] > "..text) end end
 
 -- scale a value between 0 and 1
 local function normalize(value, min, max) return (value - min) / (max - min) end
@@ -81,14 +89,21 @@ local function normalize(value, min, max) return (value - min) / (max - min) end
 
 -- get the current ship's rotation data
 local function get_rotation_deg()
+    stdout("obtaining rotation info from ship reader...")
+
+    -- get the rotation from the ship reader
     local rotation = shipReader.getRotation() 
     local pitch = math.floor(math.deg(rotation.pitch)) % 360
     local roll = math.floor(math.deg(rotation.yaw)) % 360 -- YAW AND ROLL ARE INVERTED!!!!
-    local yaw = math.floor(math.deg(rotation.roll)) % 360 -- because of a bug i think?? idk these 4 lines are stolen code
+    local yaw = math.floor(math.deg(rotation.roll)) % 360 -- because of a bug i think??
+
+    -- make it a value between -180 and +180
+    local cRoll = roll > 180 and 0 - (360 - roll) or roll
+    local cPitch = pitch > 180 and 0 - (360 - pitch) or pitch
 
     return {
-        roll = math.abs(roll-180)-180,
-        pitch = math.abs(pitch-180)-180,
+        roll = cRoll,
+        pitch = cPitch,
         yaw = yaw
     }
 end
@@ -121,6 +136,7 @@ end
 --			{thruster_connections.back_right, +3}   --correction total: 6, tilting left
 --		}
 local function get_mapped_correction(axis, error)
+    stdout("mapping correction for axis "..axis.."; error: "..error.."deg...")
     local out = {}
 	local correction = get_correction_signal(error)
     correction = math.ceil(correction) --uhm sir redstone signals must be integers ☝️🤓
@@ -128,6 +144,7 @@ local function get_mapped_correction(axis, error)
 	-- Convert to output shown in comment --
     --get the affecting thrusters
     local thrusters = get_affecting_thrusters(axis)
+    stdout("found affecting thrusters")
     --for each of them:
     for i=1, #thrusters.positive do
         table.insert(out, {thrusters.positive[i], correction}) end --apply correction
@@ -139,6 +156,7 @@ end
 
 -- combine multiple get_mapped_correction() outputs
 local function sum_mapped_corrections(...)
+    stdout("summing mapped corrections...")
     local out = {
         [thruster_connections.front_left] = 0,
         [thruster_connections.front_right] = 0,
@@ -163,11 +181,7 @@ end
 
 -- basically just set engines to the corrected power level
 local function apply_corrections(summed_corrections)
-    print(
-        textutils.serialize(
-            summed_corrections
-        )
-    )
+    stdout("applying corrections...")
     for thruster, value in pairs(summed_corrections) do
         stdout("setting thruster "..thruster.." to "..value)
         redstone.setAnalogOutput(thruster, value)
@@ -175,6 +189,9 @@ local function apply_corrections(summed_corrections)
 end
 
 
+
+-- quick check
+if not shipReader then stdout("NO SHIP READER CONNECTED", log_levels.fatal) return end
 
 local function main()
 
