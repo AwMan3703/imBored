@@ -21,7 +21,7 @@ local function sendRequestAndAwaitResponse(recipientID, request, timeout)
 end
 
 
-function runModule(m)
+local function runModule(m)
     local f = load(m)
     if not f then printError("Module is nil"); return false end
     return f()
