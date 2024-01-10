@@ -46,8 +46,8 @@ local target_rotation = {
 
 -- the tilt threshold (in degrees) at which the thrusters are set to maximum power to correct the position
 local max_correction_threshold = {
-	roll = 45,
-	pitch = 45
+	[axes.roll] = 45,
+	[axes.pitch] = 45
 }
 
 
@@ -117,7 +117,7 @@ end
 local function get_correction_signal(error, axis)
 	if error == 0 then return 0 end -- skip useless computing
 	local correction = error -- invert the error to find the correction
-	correction = normalize(correction, target_rotation, max_correction_threshold) -- normalize to force between target_rotation and target_rotation + max_correction_threshold
+	correction = normalize(correction, target_rotation, max_correction_threshold[axis]) -- normalize to force between target_rotation and target_rotation + max_correction_threshold
 	correction = correction * signal_range_max -- range the correction
 	return 0 - correction
 end
@@ -138,7 +138,7 @@ end
 local function get_mapped_correction(axis, error)
     stdout("mapping correction for axis "..axis.."; error: "..error.."deg...")
     local out = {}
-	local correction = get_correction_signal(error)
+	local correction = get_correction_signal(error, axis)
     correction = math.ceil(correction) --uhm sir redstone signals must be integers ☝️🤓
 
 	-- Convert to output shown in comment --
@@ -199,8 +199,8 @@ local function main()
     local cRot = get_rotation_deg()
 
     -- calculate the error
-    local errorRoll = 0
-    local errorPitch = 0
+    local errorRoll = cRot.roll
+    local errorPitch = cRot.pitch
 
     -- calculate correction signals
     local correctRoll = get_mapped_correction(axes.roll, -67)
