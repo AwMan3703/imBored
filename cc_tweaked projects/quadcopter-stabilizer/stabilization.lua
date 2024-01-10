@@ -40,14 +40,14 @@ local verbose_output = true
 
 -- the target range of rotation you want to correct to, 0 being perfectly vertical
 local target_rotation = {
-	roll = { min = -1, max = 1 },
-	pitch = { min = -1, max = 1 }
+	[axes.roll] = { min = -1, max = 1 },
+	[axes.pitch] = { min = -1, max = 1 }
 }
 
 -- the tilt threshold (in degrees) at which the thrusters are set to maximum power to correct the position
 local max_correction_threshold = {
-	[axes.roll] = 45,
-	[axes.pitch] = 45
+	[axes.roll] = 35,
+	[axes.pitch] = 35
 }
 
 
@@ -62,8 +62,8 @@ local axes_thruster_mapping = {
         negative = { thruster_connections.back_left, thruster_connections.back_right }
     },
     [axes.roll] = {
-        positive = { thruster_connections.front_right, thruster_connections.back_right },
-        negative = { thruster_connections.front_left, thruster_connections.back_left }
+        positive = { thruster_connections.front_left, thruster_connections.back_left },
+        negative = { thruster_connections.front_right, thruster_connections.back_right }
     }
 }
 
@@ -83,6 +83,9 @@ local function stdout(text, level) if verbose_output or level == log_levels.fata
 
 -- scale a value between 0 and 1
 local function normalize(value, min, max) return (value - min) / (max - min) end
+
+-- clamp a value between a min and a max
+local function clamp(value, min, max) return math.max(math.min(value, max), min) end
 
 
 -- SCRIPT
@@ -117,7 +120,7 @@ end
 local function get_correction_signal(error, axis)
 	if error == 0 then return 0 end -- skip useless computing
 	local correction = error -- invert the error to find the correction
-	correction = normalize(correction, target_rotation, max_correction_threshold[axis]) -- normalize to force between target_rotation and target_rotation + max_correction_threshold
+	correction = normalize(correction, target_rotation[axis].min, max_correction_threshold[axis]) -- normalize to force between target_rotation and target_rotation + max_correction_threshold
 	correction = correction * signal_range_max -- range the correction
 	return 0 - correction
 end
@@ -184,7 +187,7 @@ local function apply_corrections(summed_corrections)
     stdout("applying corrections...")
     for thruster, value in pairs(summed_corrections) do
         stdout("setting thruster "..thruster.." to "..value)
-        redstone.setAnalogOutput(thruster, value)
+        redstone.setAnalogOutput(thruster, clamp(value, 0, signal_range_max)) --set it to a number between 0 and 15 obv
     end
 end
 
@@ -198,16 +201,23 @@ local function main()
     -- get the current tilt (ignore yaw because i'm cool like that)
     local cRot = get_rotation_deg()
 
+    -- make up an unattainable objective you'll never reach, just like
+    -- every time you try to actually do something with your life :)
+    local objectiveRoll = (target_rotation[axes.roll].min + target_rotation[axes.roll].max) / 2
+    local objectivePitch = (target_rotation[axes.pitch].min + target_rotation[axes.pitch].max) / 2
+
     -- calculate the error
-    local errorRoll = cRot.roll
-    local errorPitch = cRot.pitch
+    local errorRoll = math.abs(objectiveRoll - cRot.roll)
+    local errorPitch = math.abs(objectivePitch - cRot.pitch)
 
     -- calculate correction signals
-    local correctRoll = get_mapped_correction(axes.roll, -67)
-    local correctPitch = get_mapped_correction(axes.pitch, 42)
+    local correctRoll = get_mapped_correction(axes.roll, errorRoll)
+    local correctPitch = get_mapped_correction(axes.pitch, errorPitch)
 
     local correctSum = sum_mapped_corrections( correctRoll, correctPitch )
 
     apply_corrections( correctSum )
+
+    sleep(.25)
 
 end main()
