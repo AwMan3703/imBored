@@ -69,17 +69,17 @@ local axes_thruster_mapping = {
 
 -- log levels for stdout()
 local log_levels = {
-    info = "LOG_INFO",
-    warn = "LOG_WARN",
-    error = "LOG_ERROR",
-    fatal = "LOG_FATAL"
+    info = "INFO",
+    warn = "WARN",
+    error = "ERROR",
+    fatal = "FATAL"
 }
 
 
 -- UTILITY FUNCTIONS
 
 -- output process information
-local function stdout(text, level) if verbose_output or level == log_levels.fatal then print("[STABILIZER.lua/"..level or log_levels.info.."] > "..text) end end
+local function stdout(text, level) if verbose_output or level == log_levels.fatal then print("[STABILIZER.lua/"..(level or log_levels.info).."] > "..text) end end
 
 -- scale a value between 0 and 1
 local function normalize(value, min, max) return (value - min) / (max - min) end
