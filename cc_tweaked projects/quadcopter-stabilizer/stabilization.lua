@@ -1,5 +1,22 @@
 
--- Connect to a quad-copter system's individual thrusters' throttling to stabilize it regardless (kinda) of weight
+-- UTILITY CONSTANTS - ignore this part -------------------------------------------------
+
+local axes = {
+    roll = "AXES_ROLL",
+    pitch = "AXES_PITCH",
+    yaw = "AXES_YAW",
+}
+
+-----------------------------------------------------------------------------------------
+
+-- ABOUT
+
+-- Mods needed:
+-- CC:Tweaked (code execution), Valkyrien skies (ships), Valkyrien computers (sensors)
+
+-- Connect this computer to a quad-copter-like system's individual thrusters' throttling to stabilize it regardless (kinda) of weight
+-- assign a side to each thruster in the thruster_connections table, then connect a valkyrien computers' ship reader and run this program:
+-- the algorithm will try to balance it so that even if weight balancement changes the whole thing doesn't tilt over and fly off.
 
 
 -- INPUT
@@ -15,13 +32,16 @@ local thruster_connections = {
     back_right = "back"
 }
 
+-- connect your ship reader
 local shipReader = peripheral.find("ship_reader")
 
--- the target range of rotation you want to correct to
--- TODO: ACTUALLY IMPLEMENT IT AS A RANGE
-local target_position = {
-	roll = 0,
-	pitch = 0
+-- wether to output details about the process
+local verbose_output = false
+
+-- the target range of rotation you want to correct to, 0 being perfectly vertical
+local target_rotation = {
+	roll = { min = -1, max = 1 },
+	pitch = { min = -1, max = 1 }
 }
 
 -- the tilt threshold (in degrees) at which the thrusters are set to maximum power to correct the position
@@ -34,12 +54,6 @@ local max_correction_threshold = {
 -- CONSTANTS
 
 local signal_range_max = 15 --output signal range (0 to X)
-
-local axes = {
-    roll = "AXES_ROLL",
-    pitch = "AXES_PITCH",
-    yaw = "AXES_YAW",
-}
 
 --which thrusters affect which axes
 local axes_thruster_mapping = {
@@ -54,7 +68,10 @@ local axes_thruster_mapping = {
 }
 
 
--- UTILITY
+-- UTILITY FUNCTIONS
+
+-- output process information
+local function stdout(text) if verbose_output then print(text) end end
 
 -- scale a value between 0 and 1
 local function normalize(value, min, max) return (value - min) / (max - min) end
@@ -62,17 +79,17 @@ local function normalize(value, min, max) return (value - min) / (max - min) end
 
 -- SCRIPT
 
--- get the current ship rotation data
-local function get_deg_rotation()
+-- get the current ship's rotation data
+local function get_rotation_deg()
     local rotation = shipReader.getRotation() 
     local pitch = math.floor(math.deg(rotation.pitch)) % 360
     local roll = math.floor(math.deg(rotation.yaw)) % 360 -- YAW AND ROLL ARE INVERTED!!!!
-    local yaw = math.floor(math.deg(rotation.roll)) % 360 -- because of a bug i think??
+    local yaw = math.floor(math.deg(rotation.roll)) % 360 -- because of a bug i think?? idk these 4 lines are stolen code
 
     return {
         roll = math.abs(roll-180)-180,
         pitch = math.abs(pitch-180)-180,
-        yaw = yaw,
+        yaw = yaw
     }
 end
 
@@ -82,10 +99,10 @@ local function get_affecting_thrusters(axis)
 end
 
 -- find how much signal you need to correct the tilt
-local function get_correction_signal(error)
+local function get_correction_signal(error, axis)
 	if error == 0 then return 0 end -- skip useless computing
 	local correction = error -- invert the error to find the correction
-	correction = normalize(correction, 0, 180) -- normalize to force between target_position and target_position + max_correction_threshold
+	correction = normalize(correction, target_rotation, max_correction_threshold) -- normalize to force between target_rotation and target_rotation + max_correction_threshold
 	correction = correction * signal_range_max -- range the correction
 	return 0 - correction
 end
@@ -152,7 +169,7 @@ local function apply_corrections(summed_corrections)
         )
     )
     for thruster, value in pairs(summed_corrections) do
-        print("set thruster "..thruster.." to "..value)
+        stdout("setting thruster "..thruster.." to "..value)
         redstone.setAnalogOutput(thruster, value)
     end
 end
@@ -161,11 +178,19 @@ end
 
 local function main()
 
-    apply_corrections(
-        sum_mapped_corrections(
-            get_mapped_correction(axes.roll, -67),
-            get_mapped_correction(axes.pitch, 42)
-        )
-    )
+    -- get the current tilt (ignore yaw because i'm cool like that)
+    local cRot = get_rotation_deg()
+
+    -- calculate the error
+    local errorRoll = 0
+    local errorPitch = 0
+
+    -- calculate correction signals
+    local correctRoll = get_mapped_correction(axes.roll, -67)
+    local correctPitch = get_mapped_correction(axes.pitch, 42)
+
+    local correctSum = sum_mapped_corrections( correctRoll, correctPitch )
+
+    apply_corrections( correctSum )
 
 end main()
