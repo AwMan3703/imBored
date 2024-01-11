@@ -7,6 +7,8 @@ local axes = {
     yaw = "AXES_YAW",
 }
 
+local term = peripheral.wrap("monitor_0")
+
 -----------------------------------------------------------------------------------------
 
 -- ABOUT
@@ -17,6 +19,8 @@ local axes = {
 -- Connect this computer to a quad-copter-like system's individual thrusters' throttling to stabilize it regardless (kinda) of weight
 -- assign a side to each thruster in the thruster_connections table, then connect a valkyrien computers' ship reader and run this program:
 -- the algorithm will try to balance it so that even if weight balancement changes the whole thing doesn't tilt over and fly off.
+
+-- Customize the program's parameters using the "Input" section below
 
 
 -- INPUT
@@ -36,7 +40,7 @@ local thruster_connections = {
 local shipReader = peripheral.find("ship_reader")
 
 -- wether to output details about the process
-local verbose_output = true
+local verbose_output = false
 
 -- the target range of rotation you want to correct to, 0 being perfectly vertical
 local target_rotation = {
@@ -46,8 +50,8 @@ local target_rotation = {
 
 -- the tilt threshold (in degrees) at which the thrusters are set to maximum power to correct the position
 local max_correction_threshold = {
-	[axes.roll] = 35,
-	[axes.pitch] = 35
+	[axes.roll] = 10,
+	[axes.pitch] = 10
 }
 
 
@@ -122,6 +126,7 @@ local function get_correction_signal(error, axis)
 	local correction = error -- invert the error to find the correction
 	correction = normalize(correction, target_rotation[axis].min, max_correction_threshold[axis]) -- normalize to force between target_rotation and target_rotation + max_correction_threshold
 	correction = correction * signal_range_max -- range the correction
+    correction = (correction / 2) + (signal_range_max / 2) -- halve it and add signal_range_max/2, so it doesn't output negative redstone signals
 	return 0 - correction
 end
 
@@ -179,6 +184,12 @@ local function sum_mapped_corrections(...)
         end
     end
 
+    for k, v in pairs(out) do
+        v = (v/2) + signal_range_max -- slide the correction inside the signal range to avoid negative signals
+        v = clamp(v, 0, signal_range_max) -- clamp it, just for good measure
+        out[k] = v
+    end
+
     return out
 end
 
@@ -187,7 +198,7 @@ local function apply_corrections(summed_corrections)
     stdout("applying corrections...")
     for thruster, value in pairs(summed_corrections) do
         stdout("setting thruster "..thruster.." to "..value)
-        redstone.setAnalogOutput(thruster, clamp(value, 0, signal_range_max)) --set it to a number between 0 and 15 obv
+        redstone.setAnalogOutput(thruster, clamp(value, 0, signal_range_max)) --set it to a number between 0 and signal_range_max obv
     end
 end
 
@@ -200,6 +211,11 @@ local function main()
 
     -- get the current tilt (ignore yaw because i'm cool like that)
     local cRot = get_rotation_deg()
+
+    -- don't waste your time
+    local inRoll = target_rotation[axes.roll].min <= cRot.roll and cRot.roll <= target_rotation[axes.roll].max
+    local inPitch = target_rotation[axes.pitch].min <= cRot.pitch and cRot.pitch <= target_rotation[axes.pitch].max
+negative    if inRoll and inPitch then return end
 
     -- make up an unattainable objective you'll never reach, just like
     -- every time you try to actually do something with your life :)
@@ -218,6 +234,21 @@ local function main()
 
     apply_corrections( correctSum )
 
-    sleep(.25)
+    term.setCursorPos(1,1)
+    term.write("FL ("..thruster_connections.front_left.."): -"..correctSum[thruster_connections.front_left].." power    ")
+    term.setCursorPos(1,2)
+    term.write("FR ("..thruster_connections.front_right.."): -"..correctSum[thruster_connections.front_right].." power    ")
+    term.setCursorPos(1,3)
+    term.write("BL ("..thruster_connections.back_left.."): -"..correctSum[thruster_connections.back_left].." power    ")
+    term.setCursorPos(1,4)
+    term.write("BR ("..thruster_connections.back_right.."): -"..correctSum[thruster_connections.back_right].." power    ")
+    term.setCursorPos(1,5)
+    term.write("R:"..cRot.roll.." P:"..cRot.pitch.."    ")
 
-end main()
+end
+
+while true do
+    main()
+    sleep(.25)
+end
+
