@@ -7,7 +7,7 @@ local axes = {
     yaw = "AXES_YAW",
 }
 
-local term = peripheral.wrap("monitor_0")
+local term = peripheral.find("monitor")
 
 -----------------------------------------------------------------------------------------
 
@@ -46,6 +46,12 @@ local verbose_output = false
 local target_rotation = {
 	[axes.roll] = { min = -1, max = 1 },
 	[axes.pitch] = { min = -1, max = 1 }
+}
+-- make up an unattainable objective you'll never reach, just like
+-- every time you try to actually do something with your life :)
+local target_rotation_average = {
+[axes.roll] = (target_rotation[axes.roll].min + target_rotation[axes.roll].max) / 2,
+[axes.pitch] = (target_rotation[axes.pitch].min + target_rotation[axes.pitch].max) / 2,
 }
 
 -- the tilt threshold (in degrees) at which the thrusters are set to maximum power to correct the position
@@ -105,8 +111,10 @@ local function get_rotation_deg()
     local yaw = math.floor(math.deg(rotation.roll)) % 360 -- because of a bug i think??
 
     -- make it a value between -180 and +180
-    local cRoll = roll > 180 and 0 - (360 - roll) or roll
-    local cPitch = pitch > 180 and 0 - (360 - pitch) or pitch
+    local cRoll = roll - 180
+    local cPitch = pitch - 180
+    cRoll = roll < 0 and -180 - roll or 180 - roll
+    cPitch = pitch < 0 and -180 - pitch or 180 - pitch
 
     return {
         roll = cRoll,
@@ -122,11 +130,10 @@ end
 
 -- find how much signal you need to correct the tilt
 local function get_correction_signal(error, axis)
-	if error == 0 then return 0 end -- skip useless computing
 	local correction = error -- invert the error to find the correction
-	correction = normalize(correction, target_rotation[axis].min, max_correction_threshold[axis]) -- normalize to force between target_rotation and target_rotation + max_correction_threshold
+	correction = normalize(correction, target_rotation_average[axis], max_correction_threshold[axis]) -- normalize to force between target_rotation and target_rotation + max_correction_threshold
 	correction = correction * signal_range_max -- range the correction
-    correction = (correction / 2) + (signal_range_max / 2) -- halve it and add signal_range_max/2, so it doesn't output negative redstone signals
+    correction = signal_range_max - correction -- invert it, cuz what we found was actually how much we had to subtract
 	return 0 - correction
 end
 
@@ -215,16 +222,11 @@ local function main()
     -- don't waste your time
     local inRoll = target_rotation[axes.roll].min <= cRot.roll and cRot.roll <= target_rotation[axes.roll].max
     local inPitch = target_rotation[axes.pitch].min <= cRot.pitch and cRot.pitch <= target_rotation[axes.pitch].max
-negative    if inRoll and inPitch then return end
-
-    -- make up an unattainable objective you'll never reach, just like
-    -- every time you try to actually do something with your life :)
-    local objectiveRoll = (target_rotation[axes.roll].min + target_rotation[axes.roll].max) / 2
-    local objectivePitch = (target_rotation[axes.pitch].min + target_rotation[axes.pitch].max) / 2
+    if inRoll and inPitch then return end
 
     -- calculate the error
-    local errorRoll = math.abs(objectiveRoll - cRot.roll)
-    local errorPitch = math.abs(objectivePitch - cRot.pitch)
+    local errorRoll = math.abs(target_rotation_average[axes.roll] - cRot.roll)
+    local errorPitch = math.abs(target_rotation_average[axes.pitch] - cRot.pitch)
 
     -- calculate correction signals
     local correctRoll = get_mapped_correction(axes.roll, errorRoll)
