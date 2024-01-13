@@ -16,9 +16,9 @@ local term = peripheral.find("monitor")
 -- Mods needed:
 -- CC:Tweaked (code execution), Valkyrien skies (ships), Valkyrien computers (sensors)
 
--- Connect this computer to a quad-copter-like system's individual thrusters' throttling to stabilize it regardless (kinda) of weight
--- assign a side to each thruster in the thruster_connections table, then connect a valkyrien computers' ship reader and run this program:
--- the algorithm will try to balance it so that even if weight balancement changes the whole thing doesn't tilt over and fly off.
+-- Connect this computer to a quad-copter-like system's individual thrusters' throttling to stabilize it regardless (kinda) of weight.
+-- Assign a side to each thruster in the thruster_connections table, then connect a valkyrien computers' ship reader and run this
+-- program: the algorithm will try to balance it so that even if weight balancement changes the whole thing doesn't tilt over and fly off.
 
 -- Customize the program's parameters using the "Input" section below
 
@@ -46,12 +46,6 @@ local verbose_output = false
 local target_rotation = {
 	[axes.roll] = { min = -1, max = 1 },
 	[axes.pitch] = { min = -1, max = 1 }
-}
--- make up an unattainable objective you'll never reach, just like
--- every time you try to actually do something with your life :)
-local target_rotation_average = {
-    [axes.roll] = (target_rotation[axes.roll].min + target_rotation[axes.roll].max) / 2,
-    [axes.pitch] = (target_rotation[axes.pitch].min + target_rotation[axes.pitch].max) / 2,
 }
 
 -- the tilt threshold (in degrees) at which the thrusters are set to maximum power to correct the position
@@ -83,6 +77,13 @@ local log_levels = {
     warn = "WARN",
     error = "ERROR",
     fatal = "FATAL"
+}
+
+-- make up an unattainable objective you'll never reach, just like
+-- every time you try to actually do something with your life :)
+local target_rotation_average = {
+    [axes.roll] = (target_rotation[axes.roll].min + target_rotation[axes.roll].max) / 2,
+    [axes.pitch] = (target_rotation[axes.pitch].min + target_rotation[axes.pitch].max) / 2,
 }
 
 
@@ -153,7 +154,7 @@ end
 --			{thruster_connections.back_right, +3}   --correction total: 6, tilting left
 --		}
 local function get_mapped_correction(axis, error)
-    stdout("mapping correction for axis "..axis.."; error: "..error.."deg...")
+    stdout("mapping corrections for axis "..axis.."; error: "..error.."deg...")
     local out = {}
 	local correction = get_correction_signal(error, axis)
 
@@ -195,6 +196,13 @@ local function sum_mapped_corrections(...)
     return out
 end
 
+-- take summed corrections, then scale them in the output signal range
+local function normalize_summed_corrections(summed_corrections)
+    for thruster, correction in pairs(summed_corrections) do
+        
+    end
+end
+
 -- basically just set engines to the corrected power level
 local function apply_corrections(summed_corrections)
     stdout("applying corrections...")
@@ -210,9 +218,9 @@ end
 if not shipReader then stdout("NO SHIP READER CONNECTED", log_levels.fatal) return end
 
 -- main body
-local function main()
+local function main(iteration)
 
-    -- get the current tilt (ignore yaw because i'm cool like that)
+    -- get the current tilt
     local cRot = get_rotation_deg()
 
     -- find out if the rotation is in the target range
@@ -220,10 +228,14 @@ local function main()
     local inPitch = target_rotation[axes.pitch].min <= cRot.pitch and cRot.pitch <= target_rotation[axes.pitch].max
 
     -- calculate the error
-    local errorRoll = math.abs(target_rotation_average[axes.roll] - cRot.roll)
-    local errorPitch = math.abs(target_rotation_average[axes.pitch] - cRot.pitch)
+    local errorRoll = 0 - ( cRot.roll - target_rotation_average[axes.roll] )
+    local errorPitch = 0 - ( cRot.pitch - target_rotation_average[axes.pitch] )
 
-    -- calculate correction signals
+    --DELETE LINES THESE TWO LINES THEYRE JUST FOR DEBUGGING PURPOSES!!!!!!!!!!
+    local corrRoll = get_correction_signal(errorRoll, axes.roll)
+    local corrPitch = get_correction_signal(errorPitch, axes.pitch)
+
+    -- calculate correction signals for each thruster
     local correctRoll = get_mapped_correction(axes.roll, errorRoll)
     local correctPitch = get_mapped_correction(axes.pitch, errorPitch)
 
@@ -231,7 +243,7 @@ local function main()
     local correctSum = sum_mapped_corrections( correctRoll, correctPitch )
 
     -- if rotation is out of the target range
-    if (not inRoll) and (not inPitch) then
+    if (not inRoll) or (not inPitch) then
         -- then apply the corrections
         apply_corrections( correctSum )
     end
@@ -245,13 +257,15 @@ local function main()
     term.setCursorPos(1,4)
     term.write("BR ("..thruster_connections.back_right.."): "..correctSum[thruster_connections.back_right].."    ")
     term.setCursorPos(1,5)
-    term.write("R:"..cRot.roll.." P:"..cRot.pitch.." Er:"..errorRoll.." Ep:"..errorPitch.."    ")
+    term.write(iteration.." > R:"..cRot.roll.." P:"..cRot.pitch.." Cr:"..corrRoll.." Cp:"..corrPitch.."    ")
 
 end
 
 -- loop main() forever
+local it = 0
 while true do
-    main()
+    it = it + 1
+    main(it)
     sleep(.25)
 end
 
