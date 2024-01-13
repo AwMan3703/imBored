@@ -50,8 +50,8 @@ local target_rotation = {
 -- make up an unattainable objective you'll never reach, just like
 -- every time you try to actually do something with your life :)
 local target_rotation_average = {
-[axes.roll] = (target_rotation[axes.roll].min + target_rotation[axes.roll].max) / 2,
-[axes.pitch] = (target_rotation[axes.pitch].min + target_rotation[axes.pitch].max) / 2,
+    [axes.roll] = (target_rotation[axes.roll].min + target_rotation[axes.roll].max) / 2,
+    [axes.pitch] = (target_rotation[axes.pitch].min + target_rotation[axes.pitch].max) / 2,
 }
 
 -- the tilt threshold (in degrees) at which the thrusters are set to maximum power to correct the position
@@ -91,7 +91,7 @@ local log_levels = {
 -- output process information
 local function stdout(text, level) if verbose_output or level == log_levels.fatal then print("[STABILIZER.lua/"..(level or log_levels.info).."] > "..text) end end
 
--- scale a value between 0 and 1
+-- scale a value ranging from min to max, so that it is between 0 and 1
 local function normalize(value, min, max) return (value - min) / (max - min) end
 
 -- clamp a value between a min and a max
@@ -104,22 +104,24 @@ local function clamp(value, min, max) return math.max(math.min(value, max), min)
 local function get_rotation_deg()
     stdout("obtaining rotation info from ship reader...")
 
-    -- get the rotation from the ship reader
-    local rotation = shipReader.getRotation() 
+    -- get the rotation from the ship reader, convert it to degrees /360
+    local rotation = shipReader.getRotation()
     local pitch = math.floor(math.deg(rotation.pitch)) % 360
     local roll = math.floor(math.deg(rotation.yaw)) % 360 -- YAW AND ROLL ARE INVERTED!!!!
-    local yaw = math.floor(math.deg(rotation.roll)) % 360 -- because of a bug i think??
+    --local yaw = math.floor(math.deg(rotation.roll)) % 360 -- because of a bug i think??
 
-    -- make it a value between -180 and +180
+    -- make it a value between -180 and +180, with 0 being upright
     local cRoll = roll - 180
     local cPitch = pitch - 180
-    cRoll = roll < 0 and -180 - roll or 180 - roll
-    cPitch = pitch < 0 and -180 - pitch or 180 - pitch
+    local cRollDiff = 180 - math.abs(cRoll)
+    local cPitchDiff = 180 - math.abs(cPitch)
+    cRoll = (cRoll > 0 and cRollDiff) or (0 - cRollDiff)
+    cPitch = (cPitch > 0 and cPitchDiff) or (0 - cPitchDiff)
 
     return {
         roll = cRoll,
-        pitch = cPitch,
-        yaw = yaw
+        pitch = cPitch
+        --we don't really care about yaw lol
     }
 end
 
@@ -154,7 +156,6 @@ local function get_mapped_correction(axis, error)
     stdout("mapping correction for axis "..axis.."; error: "..error.."deg...")
     local out = {}
 	local correction = get_correction_signal(error, axis)
-    correction = math.ceil(correction) --uhm sir redstone signals must be integers ☝️🤓
 
 	-- Convert to output shown in comment --
     --get the affecting thrusters
@@ -191,12 +192,6 @@ local function sum_mapped_corrections(...)
         end
     end
 
-    for k, v in pairs(out) do
-        v = (v/2) + signal_range_max -- slide the correction inside the signal range to avoid negative signals
-        v = clamp(v, 0, signal_range_max) -- clamp it, just for good measure
-        out[k] = v
-    end
-
     return out
 end
 
@@ -205,7 +200,7 @@ local function apply_corrections(summed_corrections)
     stdout("applying corrections...")
     for thruster, value in pairs(summed_corrections) do
         stdout("setting thruster "..thruster.." to "..value)
-        redstone.setAnalogOutput(thruster, clamp(value, 0, signal_range_max)) --set it to a number between 0 and signal_range_max obv
+        redstone.setAnalogOutput(thruster, math.floor(clamp(value, 0, signal_range_max))) --set it to an integer between 0 and signal_range_max obv
     end
 end
 
@@ -214,15 +209,15 @@ end
 -- quick check
 if not shipReader then stdout("NO SHIP READER CONNECTED", log_levels.fatal) return end
 
+-- main body
 local function main()
 
     -- get the current tilt (ignore yaw because i'm cool like that)
     local cRot = get_rotation_deg()
 
-    -- don't waste your time
+    -- find out if the rotation is in the target range
     local inRoll = target_rotation[axes.roll].min <= cRot.roll and cRot.roll <= target_rotation[axes.roll].max
     local inPitch = target_rotation[axes.pitch].min <= cRot.pitch and cRot.pitch <= target_rotation[axes.pitch].max
-    if inRoll and inPitch then return end
 
     -- calculate the error
     local errorRoll = math.abs(target_rotation_average[axes.roll] - cRot.roll)
@@ -232,23 +227,29 @@ local function main()
     local correctRoll = get_mapped_correction(axes.roll, errorRoll)
     local correctPitch = get_mapped_correction(axes.pitch, errorPitch)
 
+    -- sum the corrections
     local correctSum = sum_mapped_corrections( correctRoll, correctPitch )
 
-    apply_corrections( correctSum )
+    -- if rotation is out of the target range
+    if (not inRoll) and (not inPitch) then
+        -- then apply the corrections
+        apply_corrections( correctSum )
+    end
 
     term.setCursorPos(1,1)
-    term.write("FL ("..thruster_connections.front_left.."): -"..correctSum[thruster_connections.front_left].." power    ")
+    term.write("FL ("..thruster_connections.front_left.."): "..correctSum[thruster_connections.front_left].."    ")
     term.setCursorPos(1,2)
-    term.write("FR ("..thruster_connections.front_right.."): -"..correctSum[thruster_connections.front_right].." power    ")
+    term.write("FR ("..thruster_connections.front_right.."): "..correctSum[thruster_connections.front_right].."    ")
     term.setCursorPos(1,3)
-    term.write("BL ("..thruster_connections.back_left.."): -"..correctSum[thruster_connections.back_left].." power    ")
+    term.write("BL ("..thruster_connections.back_left.."): "..correctSum[thruster_connections.back_left].."    ")
     term.setCursorPos(1,4)
-    term.write("BR ("..thruster_connections.back_right.."): -"..correctSum[thruster_connections.back_right].." power    ")
+    term.write("BR ("..thruster_connections.back_right.."): "..correctSum[thruster_connections.back_right].."    ")
     term.setCursorPos(1,5)
-    term.write("R:"..cRot.roll.." P:"..cRot.pitch.."    ")
+    term.write("R:"..cRot.roll.." P:"..cRot.pitch.." Er:"..errorRoll.." Ep:"..errorPitch.."    ")
 
 end
 
+-- loop main() forever
 while true do
     main()
     sleep(.25)
