@@ -280,7 +280,7 @@ local function main(iteration)
     term.setCursorPos(1,4)
     term.write("BR ("..thruster_connections.back_right.."): "..correctSum[thruster_connections.back_right].."    ")
     term.setCursorPos(1,5)
-    term.write(iteration.." > R:"..cRot.roll.." P:"..cRot.pitch.." Xr:"..errorRoll.." Xp:"..errorPitch.."    ")
+    term.write(iteration.." > R:"..cRot.roll.." P:"..cRot.pitch.." Er:"..errorRoll.." Ep:"..errorPitch.."    ")
 
 end
 
