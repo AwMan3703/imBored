@@ -66,8 +66,8 @@ local axes_thruster_mapping = {
         negative = { thruster_connections.back_left, thruster_connections.back_right }
     },
     [axes.roll] = {
-        positive = { thruster_connections.front_left, thruster_connections.back_left },
-        negative = { thruster_connections.front_right, thruster_connections.back_right }
+        positive = { thruster_connections.front_right, thruster_connections.back_right },
+        negative = { thruster_connections.front_left, thruster_connections.back_left }
     }
 }
 
@@ -264,11 +264,10 @@ local function main(iteration)
     local correctSum = sum_mapped_corrections(correctRoll, correctPitch)
     correctSum = normalize_summed_corrections(correctSum)
 
-    -- if rotation is out of the target range
-    if (not inRoll) or (not inPitch) then
-        -- then apply the corrections
-        apply_corrections( correctSum )
-    end
+    -- then apply the corrections
+    -- (yes, also apply if no error is detected because otherwise it would mantain the previous corrected signals)
+    apply_corrections( correctSum )
+
 
     term.setCursorPos(1,1)
     term.write("FL ("..thruster_connections.front_left.."): "..correctSum[thruster_connections.front_left].."    ")
