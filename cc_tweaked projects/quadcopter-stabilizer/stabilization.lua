@@ -98,6 +98,12 @@ local function normalize(value, min, max) return (value - min) / (max - min) end
 -- clamp a value between a min and a max
 local function clamp(value, min, max) return math.max(math.min(value, max), min) end
 
+-- rounds to nearest integer
+local function round(value) if value - math.floor(value) <= 0.5 then return math.floor(value) else return math.ceil(value) end end
+
+-- make a number negative
+local function neg(value) return value * -1 end
+
 
 -- SCRIPT
 
@@ -107,9 +113,9 @@ local function get_rotation_deg()
 
     -- get the rotation from the ship reader, convert it to degrees /360
     local rotation = shipReader.getRotation()
-    local pitch = math.floor(math.deg(rotation.pitch)) % 360
-    local roll = math.floor(math.deg(rotation.yaw)) % 360 -- YAW AND ROLL ARE INVERTED!!!!
-    --local yaw = math.floor(math.deg(rotation.roll)) % 360 -- because of a bug i think??
+    local pitch = round(math.deg(rotation.pitch)) % 360
+    local roll = round(math.deg(rotation.yaw)) % 360 -- YAW AND ROLL ARE INVERTED!!!!
+    --local yaw = round(math.deg(rotation.roll)) % 360 -- because of a bug i think??
 
     -- make it a value between -180 and +180, with 0 being upright
     local cRoll = roll - 180
@@ -133,11 +139,10 @@ end
 
 -- find how much signal you need to correct the tilt
 local function get_correction_signal(error, axis)
-	local correction = error -- invert the error to find the correction
-	correction = normalize(correction, target_rotation_average[axis], max_correction_threshold[axis]) -- normalize to force between target_rotation and target_rotation + max_correction_threshold
-	correction = correction * signal_range_max -- range the correction
-    correction = signal_range_max - correction -- invert it, cuz what we found was actually how much we had to subtract
-	return 0 - correction
+	local correction = 0 + error -- don't question it
+	correction = normalize(correction, target_rotation_average[axis], target_rotation_average[axis] + max_correction_threshold[axis]) -- normalize to force between target_rotation and target_rotation + max_correction_threshold
+	correction = clamp(correction * signal_range_max, neg(signal_range_max), signal_range_max) -- range the correction 0 - signal_range_max
+	return correction
 end
 
 -- in: axis, error; out: output_signals
@@ -198,17 +203,33 @@ end
 
 -- take summed corrections, then scale them in the output signal range
 local function normalize_summed_corrections(summed_corrections)
+    stdout("normalizing correction sums...")
+    local out = {
+        [thruster_connections.front_left] = 0,
+        [thruster_connections.front_right] = 0,
+        [thruster_connections.back_left] = 0,
+        [thruster_connections.back_right] = 0
+    }
+
+    -- for each signal, normalize it
     for thruster, correction in pairs(summed_corrections) do
-        
+        out[thruster] = normalize(correction, neg(signal_range_max), signal_range_max)
+        out[thruster] = out[thruster] * (signal_range_max)
+        out[thruster] = round( clamp(out[thruster], 0, signal_range_max) )
+        stdout(thruster.." correction normalized from "..correction.." to "..out[thruster])
     end
+
+    return out
 end
 
 -- basically just set engines to the corrected power level
 local function apply_corrections(summed_corrections)
     stdout("applying corrections...")
+    -- for each thruster, set redstone output to its calculated correction
     for thruster, value in pairs(summed_corrections) do
         stdout("setting thruster "..thruster.." to "..value)
-        redstone.setAnalogOutput(thruster, math.floor(clamp(value, 0, signal_range_max))) --set it to an integer between 0 and signal_range_max obv
+        --set it to an integer between 0 and signal_range_max obv
+        redstone.setAnalogOutput(thruster, value)
     end
 end
 
@@ -228,8 +249,8 @@ local function main(iteration)
     local inPitch = target_rotation[axes.pitch].min <= cRot.pitch and cRot.pitch <= target_rotation[axes.pitch].max
 
     -- calculate the error
-    local errorRoll = 0 - ( cRot.roll - target_rotation_average[axes.roll] )
-    local errorPitch = 0 - ( cRot.pitch - target_rotation_average[axes.pitch] )
+    local errorRoll = 0 - ( target_rotation_average[axes.roll] - cRot.roll )
+    local errorPitch = 0 - ( target_rotation_average[axes.pitch] - cRot.pitch )
 
     --DELETE LINES THESE TWO LINES THEYRE JUST FOR DEBUGGING PURPOSES!!!!!!!!!!
     local corrRoll = get_correction_signal(errorRoll, axes.roll)
@@ -240,7 +261,8 @@ local function main(iteration)
     local correctPitch = get_mapped_correction(axes.pitch, errorPitch)
 
     -- sum the corrections
-    local correctSum = sum_mapped_corrections( correctRoll, correctPitch )
+    local correctSum = sum_mapped_corrections(correctRoll, correctPitch)
+    correctSum = normalize_summed_corrections(correctSum)
 
     -- if rotation is out of the target range
     if (not inRoll) or (not inPitch) then
@@ -257,7 +279,7 @@ local function main(iteration)
     term.setCursorPos(1,4)
     term.write("BR ("..thruster_connections.back_right.."): "..correctSum[thruster_connections.back_right].."    ")
     term.setCursorPos(1,5)
-    term.write(iteration.." > R:"..cRot.roll.." P:"..cRot.pitch.." Cr:"..corrRoll.." Cp:"..corrPitch.."    ")
+    term.write(iteration.." > R:"..cRot.roll.." P:"..cRot.pitch.." Xr:"..errorRoll.." Xp:"..errorPitch.."    ")
 
 end
 
