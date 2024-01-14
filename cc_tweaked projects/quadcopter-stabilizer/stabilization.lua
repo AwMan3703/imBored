@@ -216,6 +216,7 @@ local function normalize_summed_corrections(summed_corrections)
         out[thruster] = normalize(correction, neg(signal_range_max), signal_range_max)
         out[thruster] = out[thruster] * (signal_range_max)
         out[thruster] = round( clamp(out[thruster], 0, signal_range_max) )
+        out[thruster] = signal_range_max - out[thruster]
         stdout(thruster.." correction normalized from "..correction.." to "..out[thruster])
     end
 
@@ -264,9 +265,10 @@ local function main(iteration)
     local correctSum = sum_mapped_corrections(correctRoll, correctPitch)
     correctSum = normalize_summed_corrections(correctSum)
 
-    -- then apply the corrections
-    -- (yes, also apply if no error is detected because otherwise it would mantain the previous corrected signals)
-    apply_corrections( correctSum )
+    -- if an error is detected, apply the corrections
+    if (not inRoll) or (not inPitch) then
+        apply_corrections( correctSum )
+    end
 
 
     term.setCursorPos(1,1)
