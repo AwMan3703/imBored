@@ -50,8 +50,8 @@ local target_rotation = {
 
 -- the tilt threshold (in degrees) at which the thrusters are set to maximum power to correct the position
 local max_correction_threshold = {
-	[axes.roll] = 10,
-	[axes.pitch] = 10
+	[axes.roll] = 50,
+	[axes.pitch] = 50
 }
 
 
@@ -99,7 +99,7 @@ local function normalize(value, min, max) return (value - min) / (max - min) end
 local function clamp(value, min, max) return math.max(math.min(value, max), min) end
 
 -- rounds to nearest integer
-local function round(value) if value - math.floor(value) <= 0.5 then return math.floor(value) else return math.ceil(value) end end
+local function round(value) if value - math.floor(value) < 0.5 then return math.floor(value) else return math.ceil(value) end end
 
 -- make a number negative
 local function neg(value) return value * -1 end
@@ -239,11 +239,26 @@ end
 -- quick check
 if not shipReader then stdout("NO SHIP READER CONNECTED", log_levels.fatal) return end
 
+-- the speed at which the system is losing balance
+local tiltSpeedRoll = 0
+local tiltSpeedPitch = 0
+-- keep track of tilt changes
+local tiltPrevRoll = 0
+local tiltPrevPitch = 0
+
 -- main body
 local function main(iteration)
 
     -- get the current tilt
     local cRot = get_rotation_deg()
+
+    -- calculate the tilt speed
+    tiltSpeedRoll = cRot.roll - tiltPrevRoll
+    tiltSpeedPitch = cRot.pitch - tiltPrevPitch
+
+    -- store the current tilt
+    tiltPrevRoll = cRot.roll
+    tiltPrevPitch = cRot.pitch
 
     -- find out if the rotation is in the target range
     local inRoll = target_rotation[axes.roll].min <= cRot.roll and cRot.roll <= target_rotation[axes.roll].max
@@ -253,20 +268,16 @@ local function main(iteration)
     local errorRoll = 0 - ( target_rotation_average[axes.roll] - cRot.roll )
     local errorPitch = 0 - ( target_rotation_average[axes.pitch] - cRot.pitch )
 
-    --DELETE LINES THESE TWO LINES THEYRE JUST FOR DEBUGGING PURPOSES!!!!!!!!!!
-    local corrRoll = get_correction_signal(errorRoll, axes.roll)
-    local corrPitch = get_correction_signal(errorPitch, axes.pitch)
-
     -- calculate correction signals for each thruster
-    local correctRoll = get_mapped_correction(axes.roll, errorRoll)
-    local correctPitch = get_mapped_correction(axes.pitch, errorPitch)
+    local correctRoll = get_mapped_correction(axes.roll, tiltSpeedRoll)
+    local correctPitch = get_mapped_correction(axes.pitch, tiltSpeedPitch)
 
     -- sum the corrections
     local correctSum = sum_mapped_corrections(correctRoll, correctPitch)
     correctSum = normalize_summed_corrections(correctSum)
 
     -- if an error is detected, apply the corrections
-    if (not inRoll) or (not inPitch) then
+    if (not inRoll) or (not inPitch) or (iteration==1) then
         apply_corrections( correctSum )
     end
 
@@ -280,7 +291,7 @@ local function main(iteration)
     term.setCursorPos(1,4)
     term.write("BR ("..thruster_connections.back_right.."): "..correctSum[thruster_connections.back_right].."    ")
     term.setCursorPos(1,5)
-    term.write(iteration.." > R:"..cRot.roll.." P:"..cRot.pitch.." Er:"..errorRoll.." Ep:"..errorPitch.."    ")
+    term.write(iteration.." > tsR:"..cRot.roll.." tsP:"..cRot.pitch.."    ")
 
 end
 
@@ -289,6 +300,6 @@ local it = 0
 while true do
     it = it + 1
     main(it)
-    sleep(.25)
+    sleep(.26)
 end
 
