@@ -50,8 +50,8 @@ local target_rotation = {
 
 -- the tilt threshold (in degrees) at which the thrusters are set to maximum power to correct the position
 local max_correction_threshold = {
-	[axes.roll] = 50,
-	[axes.pitch] = 50
+	[axes.roll] = 180,
+	[axes.pitch] = 180
 }
 
 
