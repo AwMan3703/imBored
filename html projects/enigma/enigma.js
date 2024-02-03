@@ -1,7 +1,7 @@
 
 const keyparam = 'enigmakey'; // The name of the url parameter containing the decryption key
 
-const decryptables = document.getElementsByTagName('enigmajs-decrypt');
+const decryptables = document.getElementsByTagName('enigmajs-decrypt'); // Find the elements that need decryption
 
 const searchParams = new URLSearchParams(window.location.search); // Get the url parameters
 if (!(searchParams.has(keyparam))) { throw new Error("no Enigmajs key found"); } // If no key is found, abort
