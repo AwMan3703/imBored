@@ -1,31 +1,29 @@
 # @Aw_Man3703 (twitter, instagram)
 
 # <setup>
-from usefulStuff import StopWatch, Mat2, maxinstringlist, avg, areAllFalse
+from usefulStuff import StopWatch, Mat2, maxinstringlist, avg
 from time import sleep
 from generalDictionary import tris as dct
 dct.setLang('it_IT')
 d = lambda k : dct.translate(k)
 
-USER_WON = 'user_won'
-SELF_WON = 'self_won'
-TIE = 'tie'
-turn_durations = []
-turns_count = 0
+userWon = False
+selfWon = False
+tie = False
 
-USERMARK = 'X'
-SELFMARK = 'O'
-EMPTYMARK = ' '
+usermark = 'X'
+selfmark = 'O'
+emptymark = ' '
 
 #""AI"" parameters
 emptymarkweight = 0.5
 selfmarkweight = 1.0
 usermarkweight = 1.5
 
-grid = Mat2(3, 3, EMPTYMARK)
+grid = Mat2(3, 3, emptymark)
 
 #debug groups: play, place, pathfinder, tris checker
-debug_mode = ['tris checker']
+debug_mode = ['play']
 longestdbg, longestdbgn = maxinstringlist(debug_mode)
 
 orientation_v = "vertical |"   # vertical
@@ -60,7 +58,6 @@ class Path:
         self.tolist = [c1, c2, c3]
         self.orientation = getPathOrientation(c1, c3)
         self.direction = getPathDirection(c1, c1, c3)
-
 #function for debug output management
 def debug(group, text, level:int = 0, debuglabel:bool = True, end:str = '\n'):
     tab = 0
@@ -254,104 +251,53 @@ def getPaths(c:Coord):
     return found_paths
 # </utility>
 
+# <"AI">
+#automatically choose a cell to place a mark in
+def autoplay():
+    debug('play', 'PLAY STARTED')
+    cells:dict[float, Path] = {}
+    # for each row
+    for Nrow in range(grid.height+1):
+        # for each cell
+        for Ncell in range(grid.width+1):
+            cell = Coord(Nrow, Ncell)
+            if cell.content() == emptymark:
+                possible_paths = getPaths(cell)
+                debug('play', 'Index for cell '+cell.tostring, 2)
+                cellIndex = 0
+                for path in possible_paths:
+                    pts = pathToStrings(path)
+                    debug('play', 'accounting for path '+path.tostring, 3)
+                    if (usermark in pts) and (selfmark in pts): 
+                        debug('play', 'path contains 2 different marks, is useless', 4)
+                        continue
+                    elif pts==[emptymark, emptymark, emptymark]:
+                        debug('play', 'path is completely empty, is useless', 4)
+                        continue
+                    else:
+                        cellIndex += pts.count(usermark)*usermarkweight
+                        debug('play', '> usermark: '+str(cellIndex), 4)
+                        cellIndex += pts.count(selfmark)*selfmarkweight
+                        debug('play', '> selfmark: '+str(cellIndex), 4)
+                        cellIndex += pts.count(emptymark)*emptymarkweight
+                        debug('play', '> empty: '+str(cellIndex), 4)
+                cells[cellIndex] = cell
+                debug('play', 'cell '+str(cell.X)+','+str(cell.Y)+' added w/ index '+str(cellIndex), 3)
+
+    # shorthand for the first element in chosen_paths
+    selected:Coord = cells.pop(list(cells.keys())[0])
+    debug('play', 'targeted: '+str(selected.tostring), 1)
+
+    if Coord(1, 1).content() == emptymark: #if the center cell is empty, override the selection
+        place(selfmark, Coord(1, 1))
+        debug('play', '(overridden by vacant [1,1])', 1)
+        return
+    else: # otherwise, go for the selected cell
+        debug('play', 'best cell: '+selected.tostring)
+        place(selfmark, selected)
+# </"AI">
+
 # <game>
-#player class to interact with the game
-class Player:
-    def __init__(self, name:str, mark:str) -> None:
-        self.name = name
-        self.mark = mark
-    
-    def turn(self) -> Coord:
-        pass
-
-#""AI"" player interface
-class AutoPlayer(Player):
-    def __init__(self, name:str, mark:str) -> None:
-        super().__init__(name, mark)
-
-    def turn(self) -> Coord:
-        global grid
-        global EMPTYMARK
-        global SELFMARK
-        global USERMARK
-        global emptymarkweight
-        global selfmarkweight
-        global usermarkweight
-        if debug_mode == []: print(d('thinking')+'...', end='')
-
-        debug('play', 'PLAY STARTED')
-        cells:dict[float, Path] = {}
-        # for each row
-        for Nrow in range(grid.height+1):
-            # for each cell
-            for Ncell in range(grid.width+1):
-                cell = Coord(Nrow, Ncell)
-                if cell.content() == EMPTYMARK:
-                    possible_paths = getPaths(cell)
-                    debug('play', 'Index for cell '+cell.tostring, 2)
-                    cellIndex = 0
-                    for path in possible_paths:
-                        pts = pathToStrings(path)
-                        debug('play', 'accounting for path '+path.tostring, 3)
-                        if (USERMARK in pts) and (SELFMARK in pts): 
-                            debug('play', 'path contains 2 different marks, is useless', 4)
-                            continue
-                        elif pts==[EMPTYMARK, EMPTYMARK, EMPTYMARK]:
-                            debug('play', 'path is completely empty, is useless', 4)
-                            continue
-                        else:
-                            cellIndex += pts.count(USERMARK)*usermarkweight
-                            debug('play', '> usermark: '+str(cellIndex), 4)
-                            cellIndex += pts.count(SELFMARK)*selfmarkweight
-                            debug('play', '> selfmark: '+str(cellIndex), 4)
-                            cellIndex += pts.count(EMPTYMARK)*emptymarkweight
-                            debug('play', '> empty: '+str(cellIndex), 4)
-                    cells[cellIndex] = cell
-                    debug('play', 'cell '+str(cell.X)+','+str(cell.Y)+' added w/ index '+str(cellIndex), 3)
-
-        # shorthand for the first element in chosen_paths
-        selected:Coord = cells.pop(list(cells.keys())[0])
-        debug('play', 'targeted: '+str(selected.tostring), 1)
-
-        if Coord(1, 1).content() == EMPTYMARK: #if the center cell is empty, override the selection
-            debug('play', '(overridden by vacant [1,1])', 1)
-            r = Coord(1, 1)
-            return
-        else: # otherwise, go for the selected cell
-            debug('play', 'best cell: '+selected.tostring)
-            r = selected
-
-        sleep(.25)
-        print('', d('done'))
-        return r
-
-#human player class to interface with human players (no shit??)
-class HumanPlayer(Player):
-    def __init__(self, name:str, mark:str) -> None:
-        super().__init__(name, mark)
-
-    def turn(self) -> Coord:
-            global grid
-            global turn_durations
-            global turns_count
-            turns_count += 1
-            turn_sw = StopWatch()
-            turn_sw.start()
-            print(d('place_prompt'))
-            ply = int(input(d('row')+': '))-1
-            plx = int(input(d('column')+': '))-1
-            position = Coord(plx, ply)
-            if not coordsExist(position, grid):
-                print(d('inexistent_cell'))
-                return self.turn()
-            elif grid.get(position.X, position.Y)!=EMPTYMARK:
-                print(d('occupied_cell'))
-                return self.turn()
-            else:
-                turn_durations.append(turn_sw.read())
-                del turn_sw
-                return position
-
 #print the game grid
 def printgrid(g:Mat2):
     for r in range(g.height):
@@ -374,7 +320,7 @@ def printgrid(g:Mat2):
 #place a mark in the grid
 def place(mark:str, cell:Coord):
     debug('place', 'attempting placement in cell '+cell.tostring)
-    if grid.get(cell.X, cell.Y) == EMPTYMARK:
+    if grid.get(cell.X, cell.Y) == emptymark:
         debug('place', 'placing in cell '+str(cell.X)+'x'+str(cell.Y))
         grid.set(cell.X, cell.Y, mark)
         return True
@@ -384,63 +330,105 @@ def place(mark:str, cell:Coord):
 
 #check if a tris streak is on the grid
 def trischeck():
+    global userWon
+    global selfWon
+    global tie
     global grid
     for Nrow in range(grid.height):
-        debug('tris checker', 'operating on row '+str(Nrow), 0)
+        debug('tris checker', 'operating on row '+str(Nrow))
         for Ncell in range(len(grid.getrow(Nrow))):
-            debug('tris checker', 'operating on cell '+str(Ncell), 1)
+            debug('tris checker', 'operating on cell '+str(Ncell))
             cell = Coord(Nrow, Ncell)
-            if cell.content() != EMPTYMARK:
-                debug('tris checker', 'TC loop - Nrow: '+str(Nrow)+', Ncell: '+str(Ncell), 1)
+            if cell.content() != emptymark:
+                debug('pathfinder', 'TC loop - Nrow: '+str(Nrow)+', Ncell: '+str(Ncell))
                 paths = getPaths(cell)
                 for path in paths:
-                    debug('tris checker', 'Tris checking on path '+path.tostring, 1)
-                    if pathToStrings(path).count(USERMARK) == 3:
-                        debug('tris checker', ' > user won\n', 2)
-                        return USER_WON
-                    elif pathToStrings(path).count(SELFMARK) == 3:
-                        debug('tris checker', ' > self won\n', 2)
-                        return SELF_WON
-                    elif grid.count(EMPTYMARK)<2:
-                        debug('tris checker', ' > tie\n', 2)
-                        return TIE
+                    debug('tris checker', 'Tris checking on path '+path.tostring)
+                    if pathToStrings(path).count(usermark) == 3:
+                        userWon = True
+                        debug('tris checker', ' > user won\n', False)
+                        return True
+                    elif pathToStrings(path).count(selfmark) == 3:
+                        selfWon = True
+                        debug('tris checker', ' > self won\n', False)
+                        return True
                     else:
-                        debug('tris checker', ' > none\n', 2)
-                        return None
+                        debug('tris checker', ' > none\n', False)
+    if (not userWon) and (not selfWon) and (not grid.contains(emptymark)):
+        debug('tris checker', ' > tie')
+        tie = True
+        return True
+
+#utility
+turn_durations = []
+turns_count = 0
+
+#user turn routine
+def userturn():
+    global grid
+    global turn_durations
+    global turns_count
+    turns_count += 1
+    turn_sw = StopWatch()
+    turn_sw.start()
+    print(d('place_prompt'))
+    ply = int(input(d('row')+': '))-1
+    plx = int(input(d('column')+': '))-1
+    position = Coord(plx, ply)
+    if not coordsExist(position, grid):
+        print(d('inexistent_cell'))
+        userturn()
+    elif place(usermark, position):
+        turn_durations.append(turn_sw.read())
+        del turn_sw
+        return
+    else:
+        print(d('occupied_cell'))
+        userturn()
+
+#computer turn routine
+def selfturn(sleepTime = 0.25):
+    if debug_mode == []:
+        print(d('thinking')+'...', end='')
+    autoplay()
+    sleep(sleepTime)
+    print('', d('done'))
 # </game>
 
 # GAME SCRIPT
-user1 = HumanPlayer(d('player'), USERMARK)
-user2 = AutoPlayer(d('computer'), SELFMARK)
-
 def switchturn(previous = True):
     if previous:
         print('')
         printgrid(grid)
-        print(d('turn_header').format(user1.name))
-        place(user1.mark, user1.turn())
+        print(d('turn_header').format("User"))
+        userturn()
     else:
         print('')
         printgrid(grid)
-        print(d('turn_header').format(user2.name))
-        place(user2.mark, user2.turn())
+        print(d('turn_header').format("computer"))
+        selfturn()
     return not turn
 
 turn = True
 game_sw = StopWatch()
 game_sw.start()
 print('starting game...')
-outcome = None
-while outcome==None:
+while (not userWon) and (not selfWon) and (not tie):
     turn = switchturn(turn)
-    outcome = trischeck()
+    trischeck()
 total_elapsed = game_sw.read()
 del game_sw
-
 print('\n')
 printgrid(grid)
-print('\nresult:', outcome)
-
+print('\nresult:')
+if userWon and selfWon:
+    print('\n// TIE')
+elif userWon:
+    print('\nUSER WON')
+elif selfWon:
+    print('\nCOMPUTER WON')
+else:
+    print('\n// TIE')
 print('\n--------game stats--------')
 print('total play time: '+str(round(total_elapsed, 2)))
 print('total turns played: '+str(round(turns_count, 2)))
