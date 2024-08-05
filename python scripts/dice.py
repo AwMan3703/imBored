@@ -29,7 +29,11 @@ def setup():
     if len(bets)==1:
         print('>> redirect to single player mode, Player A wins if accuracy > 90%')
 
-    return bets
+    maxroll = int(float(input(f'Max roll ({len(bets)}-1000): ')))
+    maxroll = max(len(bets), min(maxroll, 1000))
+    col(f'Set roll range to {len(bets)}-{maxroll}', 'grey')
+
+    return bets, max
 
 def roll(max:int):
     return random.randint(1, max)
