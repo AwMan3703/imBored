@@ -10,13 +10,19 @@ color_bg = '#000000'
 color_fg = '#4AF626'
 color_ln = '#043927'
 class Graph:
-    def __init__(self, rng:float, ref_rate:float, points:int) -> None:
+    def __init__(self, rng:float, variation:float, ref_rate:float, points:int) -> None:
         self.setup()
         self.rng = rng
-        vls = []
+        vls = [0]
         while True:
-            vls.append(random.randint(int(-rng), int(rng)))
-            self.draw_frame(vls[::-1][0:points])
+            multipliers = []
+            if vls[-1] < rng: multipliers.append(variation)
+            if vls[-1] > -rng: multipliers.append(-variation)
+            change = vls[-1] + random.randint(-rng, rng) * random.choice(multipliers)
+            change = max(-rng, min(rng, change))
+            vls.append(change)
+
+            self.draw_frame(vls[-(points+1):-1])
             sleep(ref_rate)
 
     def setup(self):
@@ -30,19 +36,19 @@ class Graph:
         self.t.pencolor(color_fg)
 
     def draw_graph(self, x:float, y:float, width:float, values:array):
-        self.t.penup()
         step = step_width(len(values), width)
-        self.t.goto(x, y+values[0])
-        its = 0
-        self.t.pendown()
-        self.draw_lines(7, x, width)
         self.t.penup()
         self.t.goto(x, y)
         self.t.pendown()
+        self.draw_lines(7, x, width)
+        self.t.penup()
+        self.t.goto(x, y+values[0])
+        self.t.pendown()
+        its = 0
         for i in values:
-            its+=1
             self.t.goto(x+(step*its), y+i)
-    
+            its+=1
+
     def renderline(self, start_x:float, end_x:float, y:float):
         self.t.penup()
         self.t.goto(start_x, y)
@@ -65,4 +71,4 @@ class Graph:
         self._s.update()
 
 
-g = Graph(300, .25, 50)
+g = Graph(300, 0.5, .25, 50)
