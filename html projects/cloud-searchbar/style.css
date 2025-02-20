@@ -1,0 +1,35 @@
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#cloud-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+input#cloud-input {
+  position: absolute;
+  color: white;
+  background-color: transparent;
+  border: none;
+  z-index: 1;
+}
+input#cloud-input::placeholder {
+  color: #d6dcff;
+}
+.cloud-bubble {
+  background-color: blue;
+  filter: blur(20px);
+  animation: rotate 3s linear infinite;
+}
+/*# sourceMappingURL=style.css.map */
