@@ -24,7 +24,13 @@ ul::-webkit-scrollbar {
 }
 
 li {
-    margin-bottom: 15%;
+    cursor: default;
+    padding: 1em;
+    border-radius: 10px;
+    margin-bottom: .3em;
+}
+li:hover {
+    background-color: #4d55814d;
 }
 
 a {
