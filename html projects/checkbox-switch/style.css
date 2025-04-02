@@ -1,0 +1,26 @@
+input[type="checkbox"].toggle-switch {
+	--handle-size: 40%;
+
+	all: unset;
+	width: 2em;
+	height: 1em;
+
+	border: 1px inset light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+	border-radius: 1em;
+
+	background-color: #ece7e7;
+	background-image: radial-gradient(circle, gray calc(var(--handle-size) - 2%), transparent calc(var(--handle-size) - 1%));
+	background-position-x: -.5em;
+
+    /* OPTIONAL: if you want the transition to be animated */
+    /*
+    transition: background-position-x .075s ease-in-out;
+    */
+}
+input[type="checkbox"].toggle-switch:checked {
+	border-color: transparent;
+
+	background-color: #0c59fcff;
+	background-image: radial-gradient(circle, white calc(var(--handle-size) - 1%), transparent var(--handle-size));
+	background-position-x: .5em;
+}
