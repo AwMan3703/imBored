@@ -2,8 +2,11 @@ input[type="checkbox"].toggle-switch {
 	--handle-size: 40%;
 
 	all: unset;
+	cursor: pointer;
 	width: 2em;
 	height: 1em;
+	display: inline-block;
+	vertical-align: text-bottom;
 
 	border: 1px inset light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
 	border-radius: 1em;
