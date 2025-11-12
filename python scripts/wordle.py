@@ -6,7 +6,7 @@ import random
 class COLORS:
     correct = 'green'
     wrongplace = 'yellow'
-    incorrect = 'white'
+    incorrect = 'light_grey'
 
 
 # Functions
