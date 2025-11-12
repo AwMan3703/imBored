@@ -76,11 +76,11 @@ def loop(word, renderedGuesses, usedLetters):
 # Show title
 print(
     c("W", COLORS.correct) +
-    c("o", COLORS.wrongplace) +
-    c("r", COLORS.incorrect) +
-    c("d", COLORS.wrongplace) +
-    c("l", COLORS.incorrect) +
-    c("e", COLORS.wrongplace)
+    c("O", COLORS.wrongplace) +
+    c("R", COLORS.incorrect) +
+    c("D", COLORS.wrongplace) +
+    c("L", COLORS.correct) +
+    c("E", COLORS.wrongplace)
 )
 
 # Select a random word
